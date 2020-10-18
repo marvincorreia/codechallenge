@@ -1,0 +1,18 @@
+{% extends 'codeapp/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <!-- Monaco Editor assets -->
+    <link href="{% static "djangoeditorwidgets/monaco/monaco.custom.css" %}" type="text/css" media="screen"
+          rel="stylesheet">
+    <script src="{% static "monaco/loader.js" %}"></script>
+    <script src="{% static "djangoeditorwidgets/monaco/monaco.config.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+{% endblock %}
+
