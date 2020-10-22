@@ -12,7 +12,7 @@ class CodeModelForm(forms.ModelForm):
             "code": MonacoEditorWidget(
                 attrs={
                     "data-wordwrap": "on",
-                    "data-language": "python",
+                    "data-language": "html",
                     'data-minimap': 'true'
                 }
             )

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'djangoeditorwidgets',
+    'bootstrap4',
 
     'codeapp.apps.CodeappConfig',
 ]

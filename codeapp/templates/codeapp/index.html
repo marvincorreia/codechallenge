@@ -1,18 +1,80 @@
 {% extends 'codeapp/base.html' %}
 {% load static %}
 
-{% block extra_css %}
+{% block extra_head %}
     <!-- Monaco Editor assets -->
-    <link href="{% static "djangoeditorwidgets/monaco/monaco.custom.css" %}" type="text/css" media="screen"
+    <link href="{% static "codeapp/plugins/monaco/css/monaco.custom.css" %}" type="text/css" media="screen"
           rel="stylesheet">
     <script src="{% static "monaco/loader.js" %}"></script>
-    <script src="{% static "djangoeditorwidgets/monaco/monaco.config.js" %}"></script>
+    <script src="{% static "codeapp/plugins/monaco/js/monaco.config.js" %}"></script>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'codeapp/js/editor-script.js' %}"></script>
+    <script src="{% static 'codeapp/js/websocket.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-    </form>
+
+    <div class="row">
+        <section id="challenge_section" class="col-sm-12 col-lg-6">
+            <!-- coming soon -->
+
+        </section>
+        <section id="code_section" class="col-sm-12 col-lg-6 mt-4">
+            <div class="row code-area">
+                <form id="code_form" method="post" class="col-sm-12 ml-1 mr-1">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-lg-3">
+                            <label for="lang-picker"><span class="font-weight-bold">Lang</span></label>
+                            <select id="lang-picker" class="form-control"></select>
+                        </div>
+                        <div class="form-group col-sm-6 col-lg-3 offset-lg-2">
+                            <label for="theme-picker"><span class="font-weight-bold">Theme</span></label>
+                            <select id="theme-picker" class="form-control"></select>
+                        </div>
+                    </div>
+                    <i class="" id="lang-icon" style="font-size: 30px;"></i>
+                    {{ form.code }}
+                </form>
+                <i class="" id="lang-icon" style="font-size: 40px;"></i>
+                <div class="col-sm-12 ml-1 mr-1">
+                    <div class="card card-logger">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6 align-self-center">
+                                    <h5 class="font-weight-bold">output</h5>
+                                </div>
+                                <div id="action_buttons" class="col-sm-6">
+                                    <div class="float-right mt-1">
+
+                                        <button id="compile" class="btn btn-outline-primary mr-3" data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="compilar"><i class="fas fa-cogs"></i></button>
+                                        <button id="run" class="btn btn-outline-primary mr-4" data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="Rodar"><i class="fas fa-play"></i></button>
+                                        <button class="btn btn-outline-success">submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body overflow-auto logger">
+                            <div id="log-info"class="m-0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- render a script with editor json encoded  -->
+    {{ form.code.auto_id|json_script:"editor_id" }}
+    <!-- list of langs encoded as json script  -->
+    {{ langs|json_script:"langs" }}
+
 {% endblock %}
+
+
 
