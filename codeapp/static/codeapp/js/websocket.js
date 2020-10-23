@@ -29,19 +29,18 @@ function connectWebsocket() {
     websocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
         console.log('Data received', data);
-        let ta = document.createElement('textarea');
-        ta.readOnly = true;
-        ta.className = 'output-textarea';
-        ta.innerHTML = data['output']['stdout'] + data['output']['stderr'];
+        let elem = document.createElement('textarea');
+        elem.readOnly = true;
+        elem.className = 'output-textarea';
+        elem.innerHTML = data['output']['stdout'] + data['output']['stderr'];
         // ta.textContent = (data['output']['stdout'] + data['output']['stderr']).replace('\r\n', '<br/>');
-        $('#log-info').append(ta);
-        $('#action_buttons').find('button').each(function () {
-            $(this).removeAttr('disabled')
-        })
+        $('#log-info').append(elem);
+        changeActionButtonsState('enable')
     };
 
     websocket.onclose = function (e) {
         console.error('ws disconnected');
+        changeActionButtonsState('enable');
         setTimeout(function () {
             connectWebsocket();
         }, 2000)
@@ -51,15 +50,21 @@ function connectWebsocket() {
 function sendWebsocketData(data) {
     if (websocket.readyState === WebSocket.OPEN) {
         $('#log-info').children().remove();
-        disableActionButtons();
+        changeActionButtonsState('disable');
         websocket.send(JSON.stringify(data));
     } else {
         alert("Websocket is closed")
     }
 }
 
-function disableActionButtons() {
-    $('#action_buttons').find('button').each(function () {
-        $(this).attr('disabled', '')
-    });
+function changeActionButtonsState(state) {
+    if (state === 'enable') {
+        $('#action_buttons').find('button').each(function () {
+            $(this).removeAttr('disabled')
+        });
+    } else if (state === 'disable') {
+        $('#action_buttons').find('button').each(function () {
+            $(this).attr('disabled', '')
+        });
+    }
 }

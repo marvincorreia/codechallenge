@@ -3,7 +3,7 @@ Django Web APP
 
 # Sobre
 Aplicação web para validação e teste de código em tempo real
-utilizando websocket 
+utilizando websocket e subprocessos em python
 
 # Pré requisitos
 

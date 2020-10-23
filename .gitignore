@@ -13,6 +13,6 @@ __pycache__/
 # static files
 staticfiles/
 
-#codes submitions
-code_tester/submitions/
-code_tester/m-test
+#codes submissions
+submissions/
+m-test/
