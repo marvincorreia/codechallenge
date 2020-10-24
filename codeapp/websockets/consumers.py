@@ -10,15 +10,21 @@ class TestCodeConsumer(JsonWebsocketConsumer):
     def connect(self):
         self.accept()
         logger.error("New connection")
+        print("New connection")
 
     def receive_json(self, content, **kwargs):
-        if content['action'] == 'run':
-            output = runner.runcode(content['code'], content['lang'])
+        print(content)
+        action = content['action']
+        if action == 'run':
+            output = runner.runcode(self, content['code'], content['lang'], _input=content['input'])
             if not output['stdout'] and not output['stderr']:
                 output['stdout'] = 'Your code not return output'
-            self.send_json({'output': output})
-        elif content['action'] == 'validate':
-            self.send_json({'output': {}})
+            self.send_json(dict(output=output))
+        elif action == 'stop_run':
+            try:
+                self.subprocess.kill()
+            except Exception:
+                pass
         else:
             self.send_json({'output': f"ERROR: Invalid action -> {content['action']}"})
 

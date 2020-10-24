@@ -27,6 +27,7 @@ $(document).ready(async function () {
     editor = window[editor_id + "_monaco_editor"];
     personalizeThemes();
 
+
     let savedData = localdata.get(datakey);
     changeEditorTheme(savedData.user_theme);
 

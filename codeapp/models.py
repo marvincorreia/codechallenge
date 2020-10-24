@@ -26,8 +26,7 @@ class Language(models.Model):
 
     @staticmethod
     def get_active_langs() -> list:
-        """
-            :return: List of active wrapped Language
-            like [{'value': 'typescript','display':'TypeScript'},{...}]
+        """:return: List of active key/value wrapped Language
+           like [{'value': 'python','display':'Python'},{...}]
         """
         return [dict(value=x.name, display=x.get_name_display()) for x in Language.objects.filter(active=True)]

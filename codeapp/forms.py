@@ -13,7 +13,9 @@ class CodeModelForm(forms.ModelForm):
                 attrs={
                     "data-wordwrap": "on",
                     "data-language": "html",
-                    'data-minimap': 'true'
+                    'data-minimap': 'true',
+                    'cols': '70',
+                    'rows': '12',
                 }
             )
         }

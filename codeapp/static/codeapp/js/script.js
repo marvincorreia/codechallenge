@@ -1,8 +1,9 @@
 $(document).ready(function () {
-    // $(function () {
-    //     $('[data-toggle="tooltip"]').tooltip()
-    // });
-    setTimeout(function () {
-        $("#compile").tooltip('toogle');
-    }, 2000);
+    $('[data-toggle="popover"]').popover();
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $('[data-toggle=modal]').click(function () {
+        $(".modal").modal();
+    });
 });
