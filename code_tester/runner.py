@@ -100,35 +100,35 @@ def generate_cmd(cmd, path, filename) -> str:
     return cmd.replace('{path/filename}', join(path, filename)).replace('{filename}', filename).replace('{path}', path)
 
 
-def run_subprocess(socket, cmd, _input=None) -> dict:
+def run_subprocess(socket, cmd, input=None) -> dict:
     cmd = shlex.split(cmd)
-    if not _input:
-        _input = "\n".join([f"'MISSING-INPUT-{x}'" for x in range(1, 21)])
+    if not input:
+        input = "\n".join([f"'MISSING-INPUT-{x}'" for x in range(1, 21)])
     else:
-        _input += '\n' if _input[-1] is not '\n' else ''
+        input += '\n' if input[-1] is not '\n' else ''
 
     _subprocess = Popen(cmd, shell=False, stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
     socket.subprocess = _subprocess
     try:
-        stdout, stderr = _subprocess.communicate(timeout=5, input=_input)
+        stdout, stderr = _subprocess.communicate(timeout=5, input=input)
         if stderr:
             logger.error(stderr)
     except Exception as e:
         stdout, stderr = "", f"ERROR: {e}"
         logger.error(str(e))
-        socket.subprocess.kill()
+        _subprocess.kill()
     return dict(stdout=stdout, stderr=stderr)
 
 
-def compile_and_run(socket, compile_cmd, run_cmd, _input=None) -> dict:
-    compiler_output = run_subprocess(socket, compile_cmd, _input)
+def compile_and_run(socket, compile_cmd, run_cmd, input=None) -> dict:
+    compiler_output = run_subprocess(socket, compile_cmd, input)
     if compiler_output['stderr']:
         return compiler_output
     else:
-        return run_subprocess(socket, run_cmd, _input)
+        return run_subprocess(socket, run_cmd, input)
 
 
-def runcode(socket, code: str, lang: str, _input=None) -> dict:
+def runcode(socket, code: str, lang: str, input=None) -> dict:
     if not valid_lang(lang):
         return dict(stdout="", stderr="ERROR: This programing language is not supported")
     path, filename = make_paths()
@@ -136,10 +136,10 @@ def runcode(socket, code: str, lang: str, _input=None) -> dict:
     if get_compile_cmd(lang):
         output = compile_and_run(
             socket=socket, compile_cmd=generate_cmd(get_compile_cmd(lang), path, filename),
-            run_cmd=generate_cmd(get_run_cmd(lang), path, filename), _input=_input
+            run_cmd=generate_cmd(get_run_cmd(lang), path, filename), input=input
         )
     else:
         run_cmd = generate_cmd(get_run_cmd(lang), path, filename)
-        output = run_subprocess(socket, run_cmd, _input)
+        output = run_subprocess(socket, run_cmd, input)
     # delete_runtime_files(path, filename)
     return output
