@@ -5,32 +5,33 @@ from random import randint
 from subprocess import PIPE, Popen
 import logging
 import shlex
+import platform
 
 logger = logging.getLogger(__name__)
 
-""" {} will be replaced by path and filename
+""" {filename} will be replaced by filename
     cmd = command
     ext = file extension 
 """
 VALID_LANGS = {
     'python': {
-        'run_cmd': 'python "{path/filename}.py"',
+        'run_cmd': 'python {filename}.py',
         'ext': '.py'
     },
     # 'typescript': {'run_cmd': 'ts-node', 'ext': '.ts'},
     'javascript': {
-        'run_cmd': 'node "{path/filename}.js"',
+        'run_cmd': 'node {filename}.js',
         'ext': '.js'
     },
     'c': {
-        'run_cmd': '"{path/filename}"',
+        'run_cmd': '{filename}' if platform.system().lower() == "windows" else './{filename}',
         'ext': '.c',
-        'compile_cmd': 'gcc "{path/filename}.c" -o "{path/filename}"'
+        'compile_cmd': 'gcc {filename}.c -o {filename}'
     },
     'java': {
-        'run_cmd': 'java -cp "{path}" "{filename}"',
+        'run_cmd': 'java {filename}',
         'ext': '.java',
-        'compile_cmd': 'javac "{path/filename}.java"'
+        'compile_cmd': 'javac {filename}.java'
     }
 }
 
@@ -96,18 +97,18 @@ def make_paths() -> tuple:
     return path, filename
 
 
-def generate_cmd(cmd, path, filename) -> str:
-    return cmd.replace('{path/filename}', join(path, filename)).replace('{filename}', filename).replace('{path}', path)
+def format_cmd(cmd, filename) -> str:
+    return cmd.replace('{filename}', shlex.quote(filename))
 
 
-def run_subprocess(socket, cmd, input=None) -> dict:
+def run_subprocess(socket, cmd, path, input=None) -> dict:
     cmd = shlex.split(cmd)
     if not input:
         input = "\n".join([f"'MISSING-INPUT-{x}'" for x in range(1, 21)])
     else:
         input += '\n' if input[-1] is not '\n' else ''
 
-    _subprocess = Popen(cmd, shell=False, stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+    _subprocess = Popen(cmd, shell=False, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=path, universal_newlines=True)
     socket.subprocess = _subprocess
     try:
         stdout, stderr = _subprocess.communicate(timeout=5, input=input)
@@ -120,12 +121,12 @@ def run_subprocess(socket, cmd, input=None) -> dict:
     return dict(stdout=stdout, stderr=stderr)
 
 
-def compile_and_run(socket, compile_cmd, run_cmd, input=None) -> dict:
-    compiler_output = run_subprocess(socket, compile_cmd, input)
+def compile_and_run(socket, compile_cmd, run_cmd, path, input=None) -> dict:
+    compiler_output = run_subprocess(socket, compile_cmd, path, input)
     if compiler_output['stderr']:
         return compiler_output
     else:
-        return run_subprocess(socket, run_cmd, input)
+        return run_subprocess(socket, run_cmd, path, input)
 
 
 def runcode(socket, code: str, lang: str, input=None) -> dict:
@@ -133,13 +134,14 @@ def runcode(socket, code: str, lang: str, input=None) -> dict:
         return dict(stdout="", stderr="ERROR: This programing language is not supported")
     path, filename = make_paths()
     create_source_file(path, filename, get_ext(lang), code)
-    if get_compile_cmd(lang):
+    if need_compile(lang):
         output = compile_and_run(
-            socket=socket, compile_cmd=generate_cmd(get_compile_cmd(lang), path, filename),
-            run_cmd=generate_cmd(get_run_cmd(lang), path, filename), input=input
+            socket=socket, compile_cmd=format_cmd(get_compile_cmd(lang), filename),
+            run_cmd=format_cmd(get_run_cmd(lang), filename),
+            path=path, input=input
         )
     else:
-        run_cmd = generate_cmd(get_run_cmd(lang), path, filename)
-        output = run_subprocess(socket, run_cmd, input)
+        run_cmd = format_cmd(get_run_cmd(lang), filename)
+        output = run_subprocess(socket, run_cmd, path, input)
     # delete_runtime_files(path, filename)
     return output
