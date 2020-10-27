@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 from djangoeditorwidgets.config import *
+from django.utils.log import DEFAULT_LOGGING
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +28,7 @@ SECRET_KEY = '2g!p38xz4_@a0q9d*+yv6e$&5^5ar)7k-b!q233vl!bff&cb*m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -40,12 +42,12 @@ INSTALLED_APPS = [
     'channels',
     'djangoeditorwidgets',
     'bootstrap4',
-
     'codeapp.apps.CodeappConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -123,7 +125,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    # os.path.join(BASE_DIR, 'static')
 ]
 
 MEDIA_URL = '/media/'
@@ -131,3 +133,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 # Asynchronous Server Gateway Interface (channels)
 ASGI_APPLICATION = "codechallenge.routing.application"
+
+# log in prodution
+DEFAULT_LOGGING['handlers']['console']['filters'] = []
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

@@ -14,7 +14,7 @@ var datakey = "key";
 var localdata = localDataStorage("codeapp.code");
 if (!localdata.get(datakey)) {
     localdata.set(datakey, {
-        user_theme: THEMES[1].value
+        user_theme: THEMES[0].value
     })
 }
 
@@ -26,7 +26,6 @@ $(document).ready(async function () {
     }
     editor = window[editor_id + "_monaco_editor"];
     personalizeThemes();
-
 
     let savedData = localdata.get(datakey);
     changeEditorTheme(savedData.user_theme);

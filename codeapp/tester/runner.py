@@ -24,7 +24,7 @@ VALID_LANGS = {
         'ext': '.js'
     },
     'c': {
-        'run_cmd': '{filename}' if platform.system().lower() == "windows" else './{filename}',
+        'run_cmd': '{filename}' if platform.system() == "Windows" else './{filename}',
         'ext': '.c',
         'compile_cmd': 'gcc {filename}.c -o {filename}'
     },
@@ -44,7 +44,7 @@ def create_source_file(path, filename, ext, code):
 
 
 def class_refactor(code, filename):
-    """ Ensure that the class name is equal a file name generated """
+    """ Ensure that the class name is equal a file name generated on java """
     try:
         old_class = code[0:code.index('{')].split()[-1]
         return code.replace(old_class, filename, 1)
@@ -102,13 +102,14 @@ def format_cmd(cmd, filename) -> str:
 
 
 def run_subprocess(socket, cmd, path, input=None) -> dict:
+    logger.error(f"Subprocess running...\ncmd = {cmd}\tpath = {path}")
     cmd = shlex.split(cmd)
     if not input:
         input = "\n".join([f"'MISSING-INPUT-{x}'" for x in range(1, 21)])
     else:
         input += '\n' if input[-1] is not '\n' else ''
 
-    _subprocess = Popen(cmd, shell=False, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=path, universal_newlines=True)
+    _subprocess = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=path, universal_newlines=True)
     socket.subprocess = _subprocess
     try:
         stdout, stderr = _subprocess.communicate(timeout=5, input=input)
@@ -122,7 +123,7 @@ def run_subprocess(socket, cmd, path, input=None) -> dict:
 
 
 def compile_and_run(socket, compile_cmd, run_cmd, path, input=None) -> dict:
-    compiler_output = run_subprocess(socket, compile_cmd, path, input)
+    compiler_output = run_subprocess(socket, compile_cmd, path)
     if compiler_output['stderr']:
         return compiler_output
     else:

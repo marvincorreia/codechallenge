@@ -1,28 +1,26 @@
 {% extends 'codeapp/base.html' %}
 {% load static %}
 
-{% block extra_head %}
-
-{% endblock %}
-
 {% block extra_js %}
     <!-- Monaco Editor assets -->
-    <link href="{% static "codeapp/plugins/monaco/css/monaco.custom.css" %}" type="text/css" media="screen"
+    <link href="{% static "codeapp/vendor/monaco/css/monaco.custom.css" %}" type="text/css" media="screen"
           rel="stylesheet">
     <script src="{% static "monaco/loader.js" %}"></script>
-    <script src="{% static "codeapp/plugins/monaco/js/monaco.config.js" %}"></script>
+    <script src="{% static "codeapp/vendor/monaco/js/monaco.config.js" %}"></script>
     <!-- codechallenge assets -->
-    <script src="{% static 'codeapp/js/editor-script.js' %}"></script>
+    <script src="{% static 'codeapp/js/editor.js' %}"></script>
     <script src="{% static 'codeapp/js/websocket.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 
     <div class="row">
+        <!-- challenge section -->
         <section id="challenge_section" class="col-sm-12 col-lg-6">
             <!-- coming soon -->
 
         </section>
+        <!-- code section -->
         <section id="code_section" class="col-sm-12 col-lg-6 mt-4">
             <div class="row code-area">
                 <form id="code_form" method="post" class="col-sm-12 ml-1 mr-1">
@@ -73,12 +71,11 @@
     </div>
 
     <!-- Modal input data -->
-    <div class="modal fade" id="input-modal" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="input-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Config input</h5>
+                    <h5 class="modal-title">Config input</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

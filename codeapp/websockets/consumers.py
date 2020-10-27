@@ -1,7 +1,7 @@
 from channels.generic.websocket import JsonWebsocketConsumer
 import logging
 import json
-from code_tester import runner
+from codeapp.tester import runner
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ class TestCodeConsumer(JsonWebsocketConsumer):
         print("New connection")
 
     def receive_json(self, content, **kwargs):
-        print(content)
+        logger.error(content)
         action = content['action']
         if action == 'run':
             output = runner.runcode(self, content['code'], content['lang'], input=content['input'])

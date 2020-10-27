@@ -46,7 +46,7 @@ function sendWebSocketData(data) {
         $('#log-info').children().remove();
         websocket.send(JSON.stringify(data));
     } else {
-        /** on fail send data reset buttons state */
+        /** on fail reset buttons state */
         resetActionButtonsState();
         alert("Websocket is closed")
     }
@@ -70,28 +70,19 @@ function actionButtonsListener() {
                 .find('i').first().removeClass().addClass('fas fa-stop');
             $('#submit-btn').attr('disabled', '');
             $('input-btn').attr('disabled', '');
-            running = true;
             var data = {
                 action: 'run',
                 code: editor.getValue(),
                 lang: editor.getModel().getLanguageIdentifier()['language'],
                 input: $('#input-textarea').val()
             };
+            running = true;
             sendWebSocketData(data)
         }
     });
     $('#submit-btn').on('click', function () {
         /** disable submit and run buttons */
     });
-
-    /*$('#input-btn').on('click', function () {
-
-    });*/
-
-    /*$('#input-modal').on('shown.bs.modal', function () {
-        $(this).trigger('focus')
-    });*/
-
 }
 
 function resetActionButtonsState() {
