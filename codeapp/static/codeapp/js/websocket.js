@@ -4,7 +4,7 @@
 
 var challenge_id;
 const ws_scheme = window.location.protocol === "https:" ? "wss://" : "ws://";
-const path = ws_scheme + window.location.host + '/ws/codeapp/';
+const path = ws_scheme + window.location.host + '/ws/codeapp/code/';
 var websocket;
 var running = false;
 

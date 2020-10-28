@@ -1,12 +1,15 @@
 {% extends 'codeapp/base.html' %}
 {% load static %}
 
-{% block extra_js %}
+{% block extra_head %}
     <!-- Monaco Editor assets -->
     <link href="{% static "codeapp/vendor/monaco/css/monaco.custom.css" %}" type="text/css" media="screen"
           rel="stylesheet">
     <script src="{% static "monaco/loader.js" %}"></script>
     <script src="{% static "codeapp/vendor/monaco/js/monaco.config.js" %}"></script>
+{% endblock %}
+
+{% block extra_js %}
     <!-- codechallenge assets -->
     <script src="{% static 'codeapp/js/editor.js' %}"></script>
     <script src="{% static 'codeapp/js/websocket.js' %}"></script>

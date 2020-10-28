@@ -10,7 +10,6 @@ class TestCodeConsumer(JsonWebsocketConsumer):
     def connect(self):
         self.accept()
         logger.error("New connection")
-        print("New connection")
 
     def receive_json(self, content, **kwargs):
         logger.error(content)

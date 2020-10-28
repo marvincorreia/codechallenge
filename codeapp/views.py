@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 from . import forms
 from django.urls import reverse_lazy
 from . import models
@@ -8,11 +8,15 @@ from . import models
 # Create your views here.
 
 def home_redirect_view(request):
-    return redirect("codeapp:code")
+    return redirect('codeapp:home')
 
 
-class EditorTestView(FormView):
-    template_name = "codeapp/index.html"
+class Home(TemplateView):
+    template_name = 'codeapp/home.html'
+
+
+class CodeView(FormView):
+    template_name = "codeapp/code.html"
     form_class = forms.CodeModelForm
     success_url = reverse_lazy("codeapp:code")
 

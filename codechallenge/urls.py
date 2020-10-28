@@ -20,8 +20,8 @@ from django.conf.urls.static import static
 from codeapp.views import home_redirect_view
 
 urlpatterns = [
-    path("", home_redirect_view),
     path('admin/', admin.site.urls),
+    path("", home_redirect_view),
     path("codeapp/", include("codeapp.urls"))
 ]
 
