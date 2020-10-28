@@ -1,5 +1,5 @@
 from django.utils import timezone
-from os.path import join, isdir, dirname, isfile
+from os.path import join, isdir, dirname, isfile, abspath
 from os import makedirs, remove, listdir, removedirs
 from random import randint
 from subprocess import PIPE, Popen
@@ -41,6 +41,7 @@ def create_source_file(path, filename, ext, code):
         code = class_refactor(code, filename)
     with open(join(path, filename + ext), mode='w', encoding='UTF-8')as fp:
         fp.writelines(code.split('\r'))
+        logger.error(f"{filename}{ext} created at {abspath(path)}")
 
 
 def class_refactor(code, filename):
@@ -93,6 +94,7 @@ def make_paths() -> tuple:
     path = join('submissions', str(now.year), str(now.month), str(now.day))
     if not isdir(path):
         makedirs(path)
+    logger.error(f"Path created at: {abspath(path)}")
     filename = "File" + f"{now.year}{now.month}{now.day}{now.hour}{now.minute}{now.second}"
     return path, filename
 
@@ -102,7 +104,7 @@ def format_cmd(cmd, filename) -> str:
 
 
 def run_subprocess(socket, cmd, path, input=None) -> dict:
-    logger.error(f"Subprocess running...\ncmd = {cmd}\tpath = {path}")
+    logger.error(f"Subprocess running...\ncmd = {cmd}\tcwd = {path}")
     cmd = shlex.split(cmd)
     if not input:
         input = "\n".join([f"'MISSING-INPUT-{x}'" for x in range(1, 21)])
