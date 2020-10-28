@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import FormView
 from . import forms
 from django.urls import reverse_lazy
@@ -6,6 +6,9 @@ from . import models
 
 
 # Create your views here.
+
+def home_redirect_view(request):
+    return redirect("codeapp:code")
 
 
 class EditorTestView(FormView):

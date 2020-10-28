@@ -28,7 +28,8 @@ SECRET_KEY = '2g!p38xz4_@a0q9d*+yv6e$&5^5ar)7k-b!q233vl!bff&cb*m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'codechallengeapp.herokuapp.com']
+# SITE_URL = 'https://codechallengeapp.herokuapp.com'
 
 # Application definition
 
