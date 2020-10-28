@@ -6,5 +6,5 @@ app_name = "codeapp"
 urlpatterns = [
     path("", views.Home.as_view(), name="home"),
     path("code/", views.CodeView.as_view(), name="code"),
-    path("test/", views.CodeView.as_view(), name="test")
+    path("test/", views.TestView.as_view(), name="test")
 ]

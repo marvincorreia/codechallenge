@@ -1,5 +1,9 @@
 {% extends "codeapp/base.html" %}
 
+{% block content %}
+
+    <div class="d-flex justify-content-center p-5"><h1>Test Page</h1></div>
+{% endblock %}
 {% block extra_js %}
     <script>
         const ws_scheme = window.location.protocol === "https:" ? "wss://" : "ws://";
