@@ -26,3 +26,7 @@ class CodeView(FormView):
         if 'langs' not in kwargs:
             kwargs['langs'] = models.Language.get_active_langs()
         return super().get_context_data(**kwargs)
+
+
+class TestView(TemplateView):
+    template_name = "codeapp/test.html"
