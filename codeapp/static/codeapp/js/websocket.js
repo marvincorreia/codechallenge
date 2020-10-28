@@ -3,8 +3,8 @@
 -----------------*/
 
 var challenge_id;
-const ws_scheme = window.location.protocol === "https:" ? "wss:" : "ws:";
-const path = `${ws_scheme}//${window.location.host}/ws/codeapp/`;
+const ws_scheme = window.location.protocol === "https:" ? "wss://" : "ws://";
+const path = ws_scheme + window.location.host + '/ws/codeapp/';
 var websocket;
 var running = false;
 
