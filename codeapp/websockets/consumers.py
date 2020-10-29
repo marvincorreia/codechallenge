@@ -15,7 +15,7 @@ class TestCodeConsumer(JsonWebsocketConsumer):
         logger.error(content)
         action = content['action']
         if action == 'run':
-            output = runner.runcode(self, content['code'], content['lang'], input=content['input'])
+            output = runner.runcode(content['code'], content['lang'], input=content['input'])
             if not output['stdout'] and not output['stderr']:
                 output['stdout'] = 'Your code not return output'
             self.send_json(dict(output=output))

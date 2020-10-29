@@ -24,9 +24,13 @@
             <!-- coming soon -->
 
         </section>
+
         <!-- code section -->
         <section id="code_section" class="col-sm-12 col-lg-6 mt-4">
-            <div class="row code-area">
+            <div class="d-flex justify-content-center align-items-center">
+                <span class="loader visible" style="margin-top: 40vh; margin-bottom: 40vh"></span>
+            </div>
+            <div class="row code-area invisible">
                 <form id="code_form" method="post" class="col-sm-12 ml-1 mr-1">
                     {% csrf_token %}
                     <div class="row">

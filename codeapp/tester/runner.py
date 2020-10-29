@@ -2,7 +2,7 @@ from django.utils import timezone
 from os.path import join, isdir, dirname, isfile, abspath
 from os import makedirs, remove, listdir, removedirs
 from random import randint
-from subprocess import PIPE, Popen
+from subprocess import PIPE, run, TimeoutExpired
 import logging
 import shlex
 import platform
@@ -10,6 +10,7 @@ import platform
 logger = logging.getLogger(__name__)
 
 """ {filename} will be replaced by filename
+    {path/filename} will be replaced by path/filename
     cmd = command
     ext = file extension 
 """
@@ -24,7 +25,7 @@ VALID_LANGS = {
         'ext': '.js'
     },
     'c': {
-        'run_cmd': '{filename}' if platform.system() == "Windows" else './{filename}',
+        'run_cmd': '{path/filename}.exe' if platform.system() == "Windows" else './{filename}',
         'ext': '.c',
         'compile_cmd': 'gcc {filename}.c -o {filename}'
     },
@@ -99,11 +100,31 @@ def make_paths() -> tuple:
     return path, filename
 
 
-def format_cmd(cmd, filename) -> str:
-    return cmd.replace('{filename}', shlex.quote(filename))
+def format_cmd(cmd, path, filename) -> str:
+    return cmd.replace('{filename}', shlex.quote(filename)) \
+        .replace('{path/filename}', shlex.quote(join(path, filename)))
 
 
-def run_subprocess(socket, cmd, path, input=None) -> dict:
+# def run_subprocess(cmd, path, input=None) -> dict:
+#     logger.error(f"Subprocess running...\ncmd = {cmd}\tcwd = {path}")
+#     cmd = shlex.split(cmd)
+#     if not input:
+#         input = "\n".join([f"'MISSING-INPUT-{x}'" for x in range(1, 21)])
+#     else:
+#         input += '\n' if input[-1] is not '\n' else ''
+#
+#     _subprocess = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=path, universal_newlines=True)
+#     try:
+#         stdout, stderr = _subprocess.communicate(timeout=5, input=input)
+#         if stderr:
+#             logger.error(stderr)
+#     except Exception as e:
+#         stdout, stderr = "", f"ERROR: {e}"
+#         logger.error(str(e))
+#         _subprocess.terminate()
+#     return dict(stdout=stdout, stderr=stderr)
+
+def run_subprocess(cmd, path, input=None) -> dict:
     logger.error(f"Subprocess running...\ncmd = {cmd}\tcwd = {path}")
     cmd = shlex.split(cmd)
     if not input:
@@ -111,40 +132,39 @@ def run_subprocess(socket, cmd, path, input=None) -> dict:
     else:
         input += '\n' if input[-1] is not '\n' else ''
 
-    _subprocess = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=path, universal_newlines=True)
-    socket.subprocess = _subprocess
     try:
-        stdout, stderr = _subprocess.communicate(timeout=5, input=input)
-        if stderr:
-            logger.error(stderr)
+        sp = run(cmd, shell=False, capture_output=True, cwd=path,
+                 text=True, input=input, timeout=5)
+        if sp.stderr:
+            logger.error(sp.stderr)
     except Exception as e:
-        stdout, stderr = "", f"ERROR: {e}"
         logger.error(str(e))
-        _subprocess.kill()
-    return dict(stdout=stdout, stderr=stderr)
+        return dict(stdout="", stderr=f"ERROR: {e}")
+    logger.error(dict(stdout=sp.stdout, stderr=sp.stderr, returncode=sp.returncode))
+    return dict(stdout=sp.stdout, stderr=sp.stderr)
 
 
-def compile_and_run(socket, compile_cmd, run_cmd, path, input=None) -> dict:
-    compiler_output = run_subprocess(socket, compile_cmd, path)
+def compile_and_run(compile_cmd, run_cmd, path, input=None) -> dict:
+    compiler_output = run_subprocess(compile_cmd, path)
     if compiler_output['stderr']:
         return compiler_output
     else:
-        return run_subprocess(socket, run_cmd, path, input)
+        return run_subprocess(run_cmd, path, input)
 
 
-def runcode(socket, code: str, lang: str, input=None) -> dict:
+def runcode(code: str, lang: str, input=None) -> dict:
     if not valid_lang(lang):
         return dict(stdout="", stderr="ERROR: This programing language is not supported")
     path, filename = make_paths()
     create_source_file(path, filename, get_ext(lang), code)
     if need_compile(lang):
         output = compile_and_run(
-            socket=socket, compile_cmd=format_cmd(get_compile_cmd(lang), filename),
-            run_cmd=format_cmd(get_run_cmd(lang), filename),
+            compile_cmd=format_cmd(get_compile_cmd(lang), path, filename),
+            run_cmd=format_cmd(get_run_cmd(lang), path, filename),
             path=path, input=input
         )
     else:
-        run_cmd = format_cmd(get_run_cmd(lang), filename)
-        output = run_subprocess(socket, run_cmd, path, input)
+        run_cmd = format_cmd(get_run_cmd(lang), path, filename)
+        output = run_subprocess(run_cmd, path, input)
     # delete_runtime_files(path, filename)
     return output

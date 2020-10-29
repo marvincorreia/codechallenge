@@ -32,8 +32,13 @@ $(document).ready(async function () {
 
     themePickerListener(savedData.user_theme);
     langPickerListener();
+    showEditor();
 });
 
+function showEditor() {
+    $(".loader").css({'display': 'none'});
+    $(".code-area").removeClass('invisible')
+}
 
 function personalizeThemes() {
     /** Create personalized themes inheriting monaco default themes (vs, vs-dark, hc-black)*/
