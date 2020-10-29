@@ -105,24 +105,27 @@ def format_cmd(cmd, path, filename) -> str:
         .replace('{path/filename}', shlex.quote(join(path, filename)))
 
 
-# def run_subprocess(cmd, path, input=None) -> dict:
-#     logger.error(f"Subprocess running...\ncmd = {cmd}\tcwd = {path}")
-#     cmd = shlex.split(cmd)
-#     if not input:
-#         input = "\n".join([f"'MISSING-INPUT-{x}'" for x in range(1, 21)])
-#     else:
-#         input += '\n' if input[-1] is not '\n' else ''
-#
-#     _subprocess = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=path, universal_newlines=True)
-#     try:
-#         stdout, stderr = _subprocess.communicate(timeout=5, input=input)
-#         if stderr:
-#             logger.error(stderr)
-#     except Exception as e:
-#         stdout, stderr = "", f"ERROR: {e}"
-#         logger.error(str(e))
-#         _subprocess.terminate()
-#     return dict(stdout=stdout, stderr=stderr)
+"""
+def run_subprocess(cmd, path, input=None) -> dict:
+    logger.error(f"Subprocess running...\ncmd = {cmd}\tcwd = {path}")
+    cmd = shlex.split(cmd)
+    if not input:
+        input = "\n".join([f"'MISSING-INPUT-{x}'" for x in range(1, 21)])
+    else:
+        input += '\n' if input[-1] is not '\n' else ''
+
+    _subprocess = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=path, universal_newlines=True)
+    try:
+        stdout, stderr = _subprocess.communicate(timeout=5, input=input)
+        if stderr:
+            logger.error(stderr)
+    except Exception as e:
+        stdout, stderr = "", f"ERROR: {e}"
+        logger.error(str(e))
+        _subprocess.terminate()
+    return dict(stdout=stdout, stderr=stderr)
+"""
+
 
 def run_subprocess(cmd, path, input=None) -> dict:
     logger.error(f"Subprocess running...\ncmd = {cmd}\tcwd = {path}")
