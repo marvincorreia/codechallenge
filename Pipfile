@@ -9,8 +9,8 @@ verify_ssl = true
 django = "==3.1.2"
 channels = "==2.4.0"
 django-editor-widgets = "==3.0"
-django-bootstrap4 = "*"
-django-heroku = "*"
+django-bootstrap4 = "==2.3.1"
+django-heroku = "==0.3.1"
 
 [requires]
 python_version = "3.7"

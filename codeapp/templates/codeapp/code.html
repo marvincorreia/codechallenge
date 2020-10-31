@@ -20,18 +20,22 @@
 
     <div class="row">
         <!-- challenge section -->
-        <section id="challenge_section" class="col-sm-12 col-lg-6">
-            <!-- coming soon -->
+        <div id="challenge_section" class="col-sm-12 col-lg-6">
+            <div class=" mt-lg-4 mt-sm-2">
+                <h1>Challenge section</h1>
+            </div>
 
-        </section>
+
+            <!-- coming soon -->
+        </div>
 
         <!-- code section -->
-        <section id="code_section" class="col-sm-12 col-lg-6 mt-4">
+        <div id="code_section" class="col-sm-12 col-lg-6 mt-lg-4 mt-sm-2">
             <div class="d-flex justify-content-center align-items-center">
                 <span class="loader visible" style="margin-top: 40vh; margin-bottom: 40vh"></span>
             </div>
             <div class="row code-area invisible">
-                <form id="code_form" method="post" class="col-sm-12 ml-1 mr-1">
+                <form id="code_form" method="post" class="col-sm-12">
                     {% csrf_token %}
                     <div class="row">
                         <div class="form-group col-sm-6 col-lg-3">
@@ -46,8 +50,58 @@
                     <i class="" id="lang-icon" style="font-size: 30px;"></i>
                     {{ form.code }}
                 </form>
-                <i class="" id="lang-icon" style="font-size: 40px;"></i>
-                <div class="col-sm-12 ml-1 mr-1">
+                <i id="lang-icon" class="" style="font-size: 40px;"></i>
+                <!-- output area -->
+                <div class="col-sm-12">
+                    <div class="card card-logger text-center">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-6">
+                                    <ul class="nav nav-tabs card-header-tabs" id="outputs"
+                                        role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-primary active" id="output-tab" data-toggle="tab"
+                                               href="#output"
+                                               role="tab" aria-controls="output" aria-selected="true">Output</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-danger" id="errors-tab" data-toggle="tab"
+                                               href="#errors" role="tab" aria-controls="errors" aria-selected="false">
+                                                Errors &nbsp
+                                                <span id="errors_badge" class="badge badge-danger"></span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-12 col-lg-6">
+                                    <div class="nav nav-tabs card-header-tabs d-flex justify-content-end ">
+                                       <span data-toggle="modal" data-target="#input-modal">
+                                            <button id="input-btn" class="btn btn-outline-primary mr-3"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    title="Set input"><i class="fas fa-file-import"></i></button>
+                                        </span>
+                                        <button id="run-btn" class="btn btn-outline-primary mr-4" data-toggle="tooltip"
+                                                data-placement="top" title="Run"><i class="fas fa-play"></i></button>
+                                        <button id="submit-btn" class="btn btn-outline-success">submit</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body logger overflow-auto">
+                            <div class="tab-content" id="outputsContent">
+                                <div class="tab-pane fade show active" id="output" role="tabpanel"
+                                     aria-labelledby="output-tab">
+                                    <div id="output-info" class="m-0"></div>
+                                </div>
+                                <div class="tab-pane fade" id="errors" role="tabpanel" aria-labelledby="errors-tab">
+                                    <div id="errors-info" class="m-0"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% comment %}
+                <div class="col-sm-12">
                     <div class="card card-logger">
                         <div class="card-header">
                             <div class="row">
@@ -74,8 +128,9 @@
                         </div>
                     </div>
                 </div>
+                {% endcomment %}
             </div>
-        </section>
+        </div>
     </div>
 
     <!-- Modal input data -->

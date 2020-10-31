@@ -23,12 +23,27 @@ function connectWebSocket() {
     websocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
         console.log('Data received', data);
-        let elem = document.createElement('textarea');
-        elem.readOnly = true;
-        elem.className = 'output-textarea';
-        elem.innerHTML = data['output']['stdout'] + data['output']['stderr'];
-        // ta.textContent = (data['output']['stdout'] + data['output']['stderr']).replace('\r\n', '<br/>');
-        $('#log-info').append(elem);
+        for (var i = 0; i < 2; i++) {
+            let elem = document.createElement('textarea');
+            elem.readOnly = true;
+            elem.className = 'output-textarea';
+            if (i === 0) {
+                elem.innerHTML = data['output']['stdout'] /*+ data['output']['stderr']*/;
+                $('#output-info').append(elem);
+            } else {
+                let errors = data['output']['stderr'];
+                if (errors) {
+                    $('#errors_badge').text("1");
+                    elem.style.cssText = "background-color: black;color:#FF0000;";
+                    $('#outputs a[href="#errors"]').tab('show');
+                } else {
+                    errors = "No errors to show";
+                    $('#outputs a[href="#output"]').tab('show');
+                }
+                elem.innerHTML = errors;
+                $('#errors-info').append(elem);
+            }
+        }
         resetActionButtonsState();
     };
 
@@ -43,7 +58,9 @@ function connectWebSocket() {
 
 function sendWebSocketData(data) {
     if (websocket.readyState === WebSocket.OPEN) {
-        $('#log-info').children().remove();
+        $('#output-info').children().remove();
+        $('#errors-info').children().remove();
+        $('#errors_badge').text("");
         websocket.send(JSON.stringify(data));
     } else {
         /** on fail reset buttons state */
