@@ -33,11 +33,11 @@ function connectWebSocket() {
             } else {
                 let errors = data['output']['stderr'];
                 if (errors) {
-                    $('#errors_badge').text("1");
-                    elem.style.cssText = "background-color: black;color:#FF0000;";
+                    $('#errors-badge').text("1");
+                    elem.classList.add("stderr");
                     $('#outputs a[href="#errors"]').tab('show');
                 } else {
-                    errors = "No errors to show";
+                    // errors = "No errors to show";
                     $('#outputs a[href="#output"]').tab('show');
                 }
                 elem.innerHTML = errors;
@@ -60,7 +60,7 @@ function sendWebSocketData(data) {
     if (websocket.readyState === WebSocket.OPEN) {
         $('#output-info').children().remove();
         $('#errors-info').children().remove();
-        $('#errors_badge').text("");
+        $('#errors-badge').text("");
         websocket.send(JSON.stringify(data));
     } else {
         /** on fail reset buttons state */
@@ -77,17 +77,16 @@ function actionButtonsListener() {
     $('#run-btn').on('click', function () {
         if (running) {
             /** if running stop it */
-            $(this).removeClass().addClass('btn btn-outline-primary mr-4').attr('title', 'Run')
+            /*$(this).removeClass().addClass('btn btn-outline-primary mr-4').attr('title', 'Run')
                 .find('i').first().removeClass().addClass('fas fa-play');
             running = false;
-            sendWebSocketData({action: 'stop_run'})
+            sendWebSocketData({action: 'stop_run'})*/
         } else {
             /** otherwise run it */
-            $(this).removeClass().addClass('btn btn-danger mr-4').attr('title', 'Stop')
-                .find('i').first().removeClass().addClass('fas fa-stop');
+            $(this).removeClass().addClass('btn btn-danger mr-4')
+                .find('i').first().removeClass().addClass('fa fa-cog fa-spin');
             $('#submit-btn').attr('disabled', '');
-            $('input-btn').attr('disabled', '');
-            var data = {
+            const data = {
                 action: 'run',
                 code: editor.getValue(),
                 lang: editor.getModel().getLanguageIdentifier()['language'],
@@ -103,9 +102,10 @@ function actionButtonsListener() {
 }
 
 function resetActionButtonsState() {
-    running = false;
-    $('#run-btn').removeClass().addClass('btn btn-outline-primary mr-4').attr('title', 'Run')
-        .find('i').first().removeClass().addClass('fas fa-play');
-    $('#submit-btn').removeAttr('disabled');
-    $('#input-btn').removeAttr('disabled');
+    setTimeout(function () {
+        $('#run-btn').removeClass().addClass('btn btn-outline-primary mr-4').attr('title', 'Run')
+            .find('i').first().removeClass().addClass('fas fa-play');
+        $('#submit-btn').removeAttr('disabled');
+        running = false;
+    }, 1000);
 }

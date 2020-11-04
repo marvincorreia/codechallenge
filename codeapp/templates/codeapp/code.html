@@ -2,6 +2,24 @@
 {% load static %}
 
 {% block extra_head %}
+    {% block more_head %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <!-- challenge section -->
+        {% block challenge_section %}
+            {% include 'codeapp/includes/challenge_section.html' %}
+        {% endblock %}
+
+        <!-- editor section -->
+        {% include 'codeapp/includes/editor_section.html' %}
+    </div>
+    <!-- render a script with editor json encoded  -->
+    {{ form.code.auto_id|json_script:"editor_id" }}
+    <!-- list of langs encoded as json script  -->
+    {{ langs|json_script:"langs" }}
 
 {% endblock %}
 
@@ -14,157 +32,7 @@
     <!-- codechallenge assets -->
     <script src="{% static 'codeapp/js/editor.js' %}"></script>
     <script src="{% static 'codeapp/js/websocket.js' %}"></script>
-{% endblock %}
-
-{% block content %}
-
-    <div class="row">
-        <!-- challenge section -->
-        <div id="challenge_section" class="col-sm-12 col-lg-6">
-            <div class=" mt-lg-4 mt-sm-2">
-                <h1>Challenge section</h1>
-            </div>
-
-
-            <!-- coming soon -->
-        </div>
-
-        <!-- code section -->
-        <div id="code_section" class="col-sm-12 col-lg-6 mt-lg-4 mt-sm-2">
-            <div class="d-flex justify-content-center align-items-center">
-                <span class="loader visible" style="margin-top: 40vh; margin-bottom: 40vh"></span>
-            </div>
-            <div class="row code-area invisible">
-                <form id="code_form" method="post" class="col-sm-12">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="form-group col-sm-6 col-lg-3">
-                            <label for="lang-picker"><span class="font-weight-bold">Lang</span></label>
-                            <select id="lang-picker" class="form-control"></select>
-                        </div>
-                        <div class="form-group col-sm-6 col-lg-3 offset-lg-2">
-                            <label for="theme-picker"><span class="font-weight-bold">Theme</span></label>
-                            <select id="theme-picker" class="form-control"></select>
-                        </div>
-                    </div>
-                    <i class="" id="lang-icon" style="font-size: 30px;"></i>
-                    {{ form.code }}
-                </form>
-                <i id="lang-icon" class="" style="font-size: 40px;"></i>
-                <!-- output area -->
-                <div class="col-sm-12">
-                    <div class="card card-logger text-center">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-sm-12 col-lg-6">
-                                    <ul class="nav nav-tabs card-header-tabs" id="outputs"
-                                        role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link text-primary active" id="output-tab" data-toggle="tab"
-                                               href="#output"
-                                               role="tab" aria-controls="output" aria-selected="true">Output</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link text-danger" id="errors-tab" data-toggle="tab"
-                                               href="#errors" role="tab" aria-controls="errors" aria-selected="false">
-                                                Errors &nbsp
-                                                <span id="errors_badge" class="badge badge-danger"></span></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-12 col-lg-6">
-                                    <div class="nav nav-tabs card-header-tabs d-flex justify-content-end ">
-                                       <span data-toggle="modal" data-target="#input-modal">
-                                            <button id="input-btn" class="btn btn-outline-primary mr-3"
-                                                    data-toggle="tooltip" data-placement="top"
-                                                    title="Set input"><i class="fas fa-file-import"></i></button>
-                                        </span>
-                                        <button id="run-btn" class="btn btn-outline-primary mr-4" data-toggle="tooltip"
-                                                data-placement="top" title="Run"><i class="fas fa-play"></i></button>
-                                        <button id="submit-btn" class="btn btn-outline-success">submit</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="card-body logger overflow-auto">
-                            <div class="tab-content" id="outputsContent">
-                                <div class="tab-pane fade show active" id="output" role="tabpanel"
-                                     aria-labelledby="output-tab">
-                                    <div id="output-info" class="m-0"></div>
-                                </div>
-                                <div class="tab-pane fade" id="errors" role="tabpanel" aria-labelledby="errors-tab">
-                                    <div id="errors-info" class="m-0"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% comment %}
-                <div class="col-sm-12">
-                    <div class="card card-logger">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-sm-6 align-self-center">
-                                    <h5 class="font-weight-bold">output</h5>
-                                </div>
-                                <div id="action_buttons" class="col-sm-6">
-                                    <div class="float-right mt-1">
-                                        <span data-toggle="modal" data-target="#input-modal">
-                                            <button id="input-btn" class="btn btn-outline-primary mr-3"
-                                                    data-toggle="tooltip" data-placement="top"
-                                                    title="Set input"><i class="fas fa-file-import"></i></button>
-                                        </span>
-                                        <button id="run-btn" class="btn btn-outline-primary mr-4" data-toggle="tooltip"
-                                                data-placement="top" title="Run"><i class="fas fa-play"></i></button>
-                                        <button id="submit-btn" class="btn btn-outline-success">submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body overflow-auto logger">
-                            <div id="log-info" class="m-0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endcomment %}
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal input data -->
-    <div class="modal fade" id="input-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Config input</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="mb-3 text-muted">One entry per line</p>
-                    <form>
-                        <div class="form-group">
-                            <textarea class="form-control" id="input-textarea" style="height: 15vh;"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Save</button>
-                    <button id="save-run" type="button" class="btn btn-primary" data-dismiss="modal">
-                        Save and run
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- render a script with editor json encoded  -->
-    {{ form.code.auto_id|json_script:"editor_id" }}
-    <!-- list of langs encoded as json script  -->
-    {{ langs|json_script:"langs" }}
-
+    {% block more_js %}{% endblock %}
 {% endblock %}
 
 

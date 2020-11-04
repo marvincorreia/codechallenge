@@ -1,0 +1,106 @@
+<div id="editor_section" class="col-sm-12 col-lg-6 pr-0">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-center align-items-center">
+            <span class="loader" style="margin-top: 40vh"></span>
+        </div>
+        <div class="row code-area invisible">
+            <!-- editor area -->
+            <div class="col-sm-12">
+                <form id="code_form" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-lg-4">
+                            <label for="lang-picker"><span class="font-weight-bold f-18">Language</span></label>
+                            <select id="lang-picker" class="form-control"></select>
+                        </div>
+                        <div class="form-group col-sm-6 col-lg-4 offset-lg-2">
+                            <label for="theme-picker"><span class="font-weight-bold f-18">Theme</span></label>
+                            <select id="theme-picker" class="form-control"></select>
+                        </div>
+                    </div>
+                    <i class="" id="lang-icon" style="font-size: 30px;"></i>
+                    {{ form.code }}
+                </form>
+            </div>
+            <!-- lang icon -->
+            <i id="lang-icon" class="" style="font-size: 40px;"></i>
+            <!-- output area -->
+            <div class="col-sm-12">
+                <div class="card card-logger text-center">
+                    <div class="card-header">
+                        <div class="row">
+                            <!-- output navs -->
+                            <div class="col-sm-12 col-lg-6">
+                                <ul class="nav nav-tabs card-header-tabs" id="outputs"
+                                    role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-primary active" id="output-tab" data-toggle="tab"
+                                           href="#output" role="tab" aria-controls="output"
+                                           aria-selected="true">Output</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-danger" id="errors-tab" data-toggle="tab"
+                                           href="#errors" role="tab" aria-controls="errors" aria-selected="false">
+                                            Errors <span id="errors-badge" class="badge badge-danger"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- action buttons -->
+                            <div class="col-sm-12 col-lg-6">
+                                <div class="nav nav-tabs card-header-tabs d-flex justify-content-end">
+                                       <span data-toggle="modal" data-target="#input-modal">
+                                            <button id="input-btn" class="btn btn-outline-primary mr-3"
+                                                    data-toggle="tooltip" data-placement="left"
+                                                    title="Set input"><i class="fas fa-file-import"></i></button>
+                                        </span>
+                                    <button id="run-btn" type="button" class="btn btn-outline-primary mr-3"
+                                            title="Run"><i class="fas fa-play"></i></button>
+                                    <button id="submit-btn" class="btn btn-outline-success">submit</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-body logger">
+                        <div class="tab-content" id="outputsContent">
+                            <div class="tab-pane fade show active" id="output" role="tabpanel"
+                                 aria-labelledby="output-tab">
+                                <div id="output-info" class="m-0"></div>
+                            </div>
+                            <div class="tab-pane fade" id="errors" role="tabpanel" aria-labelledby="errors-tab">
+                                <div id="errors-info" class="m-0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal input data -->
+    <div class="modal fade" id="input-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Configure Input</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3 text-muted">One entry per line</p>
+                    <form>
+                        <div class="form-group">
+                            <textarea class="form-control" id="input-textarea" style="height: 15vh;"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Save</button>
+                    <button id="save-run" type="button" class="btn btn-primary" data-dismiss="modal">
+                        Save and run
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

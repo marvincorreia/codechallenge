@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
     <link rel="stylesheet" href="{% static 'codeapp/vendor/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'codeapp/vendor/fonts/fontawesome/css/fontawesome-all.min.css' %}">
     <link rel="stylesheet" href="{% static 'codeapp/vendor/fonts/dev-icons/css/devicons.min.css' %}">
@@ -15,12 +15,14 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
-<header>
-    {% include "codeapp/includes/header.html" %}
-</header>
+{#<header>#}
+{% include "codeapp/includes/navbar.html" %}
+{#</header>#}
+
 <main>
     {% block content %}{% endblock %}
 </main>
+
 <footer>
 
 </footer>

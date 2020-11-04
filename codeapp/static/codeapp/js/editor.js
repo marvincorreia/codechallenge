@@ -33,11 +33,19 @@ $(document).ready(async function () {
     themePickerListener(savedData.user_theme);
     langPickerListener();
     showEditor();
+    colorizeDocSamples(savedData.user_theme);
 });
 
 function showEditor() {
     $(".loader").css({'display': 'none'});
-    $(".code-area").removeClass('invisible')
+    $(".code-area").removeClass('invisible');
+    editor.layout();
+}
+
+function colorizeDocSamples(theme) {
+    $('pre').each(function () {
+        monaco.editor.colorizeElement(this, {theme: 'light'});
+    });
 }
 
 function personalizeThemes() {
