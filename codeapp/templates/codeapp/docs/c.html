@@ -12,7 +12,11 @@
             <h4 class="mt-3">Writing to standard output</h4>
             <div class="code-sample">
                 <p>Use the <strong>printf</strong> function to write on standard output</p>
-                <pre data-lang="{{ lang }}">#include &lt;stdio.h&gt;&#10;&#10;int main(){&#10;    printf("Hello World\n");&#10;}</pre>
+                <pre data-lang="{{ lang }}">
+#include &lt;stdio.h&gt;&#10;
+int main(){
+    printf("Hello World\n");
+}</pre>
                 <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
             </div>
 
@@ -53,6 +57,24 @@ int main(){
     char name[50];
     fgets(name,sizeof(name),stdin);
     printf("Hello %s",name);
+}</pre>
+                <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
+            </div>
+
+            <h4 class="mt-4">Run time out</h4>
+            <div class="code-sample">
+                <p>Your code times out after a few seconds of execution, avoid slow codes:</p>
+                <pre data-lang="{{ lang }}">
+#include &lt;stdio.h&gt;
+#include &lt;time.h&gt; &#10;
+void sleep(int millis) {
+   clock_t end_time;
+   end_time = clock() + millis * CLOCKS_PER_SEC/1000;
+   while (clock() < end_time) {}
+}&#10;
+int main(){
+    sleep(10000); // 10 seconds
+    printf("I'm tired of waiting &#9785; aff...");
 }</pre>
                 <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
             </div>

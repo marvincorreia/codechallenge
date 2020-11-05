@@ -13,7 +13,8 @@
             <div class="code-sample">
                 <p>Use the <strong>print</strong> function to write on standard output</p>
                 <p>Simple print:</p>
-                <pre data-lang="{{ lang }}">print("Hello World")</pre>
+                <pre data-lang="{{ lang }}">
+print("Hello World")</pre>
                 <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
             </div>
             <div class="code-sample">
@@ -27,20 +28,27 @@
             <div class="code-sample">
                 <p>Use the <strong>input</strong> function to read from standard input,
                     note that the entry must be defined before running the code</p>
-                <pre data-input="John Doe"
-                     data-lang="{{ lang }}">name = input()&#10;print(f"Welcome {name}")</pre>
+                <pre data-input="John Doe" data-lang="{{ lang }}">
+name = input()
+print(f"Welcome {name}")</pre>
                 <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
             </div>
             <div class="code-sample">
                 <p>Reading multiple entries:</p>
-                <pre data-input="10&#10;5" data-lang="{{ lang }}">x = int(input())&#10;y = int(input())&#10;print(f"{x} + {y} = {x+y}")</pre>
+                <pre data-input="10&#10;5" data-lang="{{ lang }}">
+x = int(input())
+y = int(input())
+print(f"{x} + {y} = {x+y}")</pre>
                 <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
             </div>
 
             <h4 class="mt-4">Run time out</h4>
             <div class="code-sample">
                 <p>Your code times out after a few seconds of execution, avoid slow codes:</p>
-                <pre data-lang="{{ lang }}">import time&#10;&#10;while True:&#10;    time.sleep(1)&#10;&#10;print("I'm tired of waiting &#9785; aff...")</pre>
+                <pre data-lang="{{ lang }}">
+import time&#10;
+time.sleep(10) # 10 seconds
+print("I'm tired of waiting &#9785; aff...")</pre>
                 <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
             </div>
         </div>

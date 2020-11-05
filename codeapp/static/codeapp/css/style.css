@@ -22,9 +22,9 @@ h3 {
     color: var(--primary-dark);
 }
 
-p, li, label, strong, textarea, a {
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 500;
+p, li, label, strong, textarea, a, .btn {
+    font-family: 'Roboto Mono', monospace !important;
+    font-weight: 500 !important;
 }
 
 input, span, pre {
@@ -73,7 +73,7 @@ pre {
     padding-bottom: 5px;
     border: 1px solid grey;
     height: 30vh;
-    min-height: 100px;
+    min-height: 200px !important;
 }
 
 .output-textarea {
@@ -88,14 +88,7 @@ pre {
 }
 
 .code-area {
-    /*padding: 30px 0 20px 0;*/
     margin: 30px 0 0 0;
-}
-
-@media only screen and (max-width: 782px) {
-    .code-area {
-        margin: 20px 0 0 0 !important;
-    }
 }
 
 .stderr {
@@ -105,7 +98,6 @@ pre {
 
 #challenge_section {
     border-right: 1px solid rgba(0, 0, 0, 0.25);
-    /*border-bottom: 1px solid rgba(0, 0, 0, 0.25);*/
     max-height: calc(100vh - 80px);
     overflow: auto;
 }
@@ -113,22 +105,36 @@ pre {
 #editor_section {
     max-height: calc(100vh - 80px);
     overflow: auto;
-    /*border-bottom: 1px solid rgba(0, 0, 0, 0.25);*/
 }
 
-/* loader */
-.loader {
-    border: 16px solid #dfdfdf;
-    border-radius: 50%;
-    border-top: 16px solid #3498db;
-    width: 120px;
-    height: 120px;
-    -webkit-animation: spin 2s linear infinite; /* Safari */
-    animation: spin 1s linear infinite;
+/* mobile and tablet view */
+@media (max-width: 992px) {
+    #challenge_section {
+        max-height: 100% !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25) !important;
+    }
+
+    #editor_section {
+        max-height: 100% !important;
+        margin-bottom: 50px !important;
+    }
+
+    div.nav-container {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+    }
+}
+
+li.nav-item.main-nav {
+    border: 1px solid transparent;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 li.nav-item.main-nav:hover {
     background-color: var(--primary-alpha);
+    border: 1px solid var(--primary-light);
+    border-radius: 0.1rem;
 }
 
 li.nav-item.main-nav:hover a.nav-link {
@@ -155,6 +161,17 @@ li.nav-item.main-nav:hover a.nav-link {
     font-size: 18px;
 }
 
+/* loader */
+.loader {
+    border: 16px solid #dfdfdf;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 1s linear infinite;
+}
+
 /* Safari */
 @-webkit-keyframes spin {
     0% {
@@ -173,6 +190,8 @@ li.nav-item.main-nav:hover a.nav-link {
         transform: rotate(360deg);
     }
 }
+
+/* end loader */
 
 .btn-primary {
     color: #fff;

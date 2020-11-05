@@ -1,7 +1,9 @@
 $(document).ready(function () {
     let lang = JSON.parse($('#doc-lang').text());
     $(".try-sample").on('click', function () {
+        $("#lang-picker").val(lang);
         changeEditorLanguage(lang);
+        $("#lang-icon").attr('class', getLangIconClass(lang));
         let preview = $(this).closest('.code-sample').find('pre');
         editor.setValue(preview[0].innerText.replace(/\xa0/g, ' '));
         if (preview.attr('data-input')) {
@@ -27,13 +29,14 @@ $(document).ready(function () {
                 running = false;
             }, 1000);
         }
-    }, 500);
+    }, 100);
 
     function changeDocLang() {
         setTimeout(function () {
             try {
                 $("#lang-picker").val(lang);
                 changeEditorLanguage(lang);
+                $("#lang-icon").attr('class', getLangIconClass(lang));
             } catch (e) {
                 changeDocLang();
             }

@@ -44,6 +44,8 @@ $(document).ready(function () {
     $('[data-toggle=modal]').click(function () {
         $(".modal").modal();
     });
+
+    /** active nav items */
     $("li.nav-item").on('click', function () {
         if (!$(this).hasClass('dropdown')) {
             $("li.nav-item").removeClass('active');
@@ -57,8 +59,7 @@ $(document).ready(function () {
                 item.addClass("active");
                 $(this).addClass("active");
             }
-        });
-        item.find('.dropdown a').each(function () {
+        }).find('.dropdown a').each(function () {
             if (window.location.pathname.includes($(this).attr('href')))
                 item.addClass("active")
         });

@@ -54,7 +54,6 @@ class DocDetailView(BaseView, FormView):
         try:
             self.template_name += kwargs["lang"] + ".html"
             get_template(self.template_name)
-            print("Template exist rsrs")
             return super(DocDetailView, self).dispatch(request, *args, **kwargs)
         except TemplateDoesNotExist:
             raise Http404
