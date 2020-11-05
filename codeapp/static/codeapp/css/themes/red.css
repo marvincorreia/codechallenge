@@ -1,0 +1,6 @@
+:root {
+   --primary-light: #ff3e50;
+    --primary: #dc3545;
+    --primary-dark: #b03240;
+    --primary-alpha: rgba(220, 53, 69, 0.07);
+}

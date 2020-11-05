@@ -1,12 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet');
+@import "themes/green.css";
+@import "imports/icons.css";
+@import "imports/font-sizes.css";
+
+main {
+    width: 98%;
+    margin-left: 1%;
+}
 
 h1, h2, h3, h4, h5, h6, strong {
     font-family: 'Russo One', sans-serif;
     font-weight: 500;
 }
 
-p, li, label, strong, textarea {
+h2 {
+    color: var(--primary);
+}
+
+h3 {
+    color: var(--primary-dark);
+}
+
+p, li, label, strong, textarea, a {
     font-family: 'Roboto Mono', monospace;
     font-weight: 500;
 }
@@ -18,21 +34,30 @@ input, span, pre {
 
 strong {
     font-weight: bold;
-    color: darkred;
+    color: var(--primary-dark);
 }
 
 pre {
-    background-color: rgba(95, 243, 20, 0.1);
+    background-color: var(--primary-alpha);
     font-size: 18px;
     padding: 15px;
-    margin-right: 15px;
     white-space: pre-line;
 }
 
-main {
-    width: 98%;
-    margin-left: 1%;
-    /*padding-bottom: 50px;*/
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-primary-light {
+    color: var(--primary-light) !important;
+}
+
+.text-primary-alpha {
+    color: var(--primary-alpha) !important;
+}
+
+.text-primary-dark {
+    color: var(--primary-dark) !important;
 }
 
 .logger {
@@ -63,20 +88,14 @@ main {
 }
 
 .code-area {
-    position: relative;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    /*border: 1px solid rgba(0, 0, 0, 0.125);*/
-    /*border-left: 1px solid rgba(0, 0, 0, 0.125);*/
-    /*border-radius: 0.25rem;*/
-    max-width: 100%;
-    padding: 20px 0 20px 10px;
+    /*padding: 30px 0 20px 0;*/
+    margin: 30px 0 0 0;
+}
+
+@media only screen and (max-width: 782px) {
+    .code-area {
+        margin: 20px 0 0 0 !important;
+    }
 }
 
 .stderr {
@@ -108,9 +127,28 @@ main {
     animation: spin 1s linear infinite;
 }
 
+li.nav-item.main-nav:hover {
+    background-color: var(--primary-alpha);
+}
+
+li.nav-item.main-nav:hover a.nav-link {
+    color: white !important;
+}
+
+.dropdown-item:hover {
+    background-color: var(--primary);
+    color: white !important;
+    font-weight: 500;
+}
+
+.dropdown-item.active {
+    background-color: var(--primary);
+}
+
 .code-sample {
     margin-top: 20px;
     padding-bottom: 20px;
+    margin-right: 20px;
 }
 
 .code-sample p {
@@ -136,37 +174,45 @@ main {
     }
 }
 
-/**
-    Fonts
- */
-.f-10 {
-    font-size: 10px;
+.btn-primary {
+    color: #fff;
+    background-color: var(--primary);
+    border-color: var(--primary);
+    font-family: "Roboto Mono", monospace;
+    font-weight: 500;
 }
 
-.f-12 {
-    font-size: 12px;
+.btn-primary:hover {
+    color: #fff;
+    background-color: var(--primary-dark);
+    border-color: var(--primary);
 }
 
-.f-14 {
-    font-size: 14px;
+.btn-primary:focus, .btn-primary.focus {
+    color: #fff;
+    background-color: var(--primary);
+    border-color: var(--primary-dark);
+    box-shadow: 0 0 0 0.2rem var(--primary-dark);
 }
 
-.f-16 {
-    font-size: 16px;
+.btn-primary.disabled, .btn-primary:disabled {
+    color: #fff;
+    background-color: var(--primary);
+    border-color: var(--primary-dark);
 }
 
-.f-18 {
-    font-size: 18px;
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
 }
 
-.f-20 {
-    font-size: 20px;
+.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem var(--primary-dark);
 }
 
-.f-22 {
-    font-size: 22px;
-}
-
-.f-24 {
-    font-size: 24px;
+.text-blue {
+    color: #007bff !important;
 }

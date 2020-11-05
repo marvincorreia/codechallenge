@@ -38,23 +38,23 @@ class CodeView(BaseView, FormView):
         return super(CodeView, self).get_context_data(**kwargs)
 
 
-class DocView(BaseView, FormView):
+class DocDetailView(BaseView, FormView):
     template_name = "codeapp/docs/"
     form_class = forms.CodeModelForm
 
     def get(self, request, *args, **kwargs):
-        return super(DocView, self).get(request, *args, **kwargs)
+        return super(DocDetailView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         if 'form' not in kwargs:
             kwargs['form'] = self.get_form()
-        return super(DocView, self).get_context_data(**kwargs)
+        return super(DocDetailView, self).get_context_data(**kwargs)
 
     def dispatch(self, request, *args, **kwargs):
         try:
             self.template_name += kwargs["lang"] + ".html"
             get_template(self.template_name)
             print("Template exist rsrs")
-            return super(DocView, self).dispatch(request, *args, **kwargs)
+            return super(DocDetailView, self).dispatch(request, *args, **kwargs)
         except TemplateDoesNotExist:
             raise Http404

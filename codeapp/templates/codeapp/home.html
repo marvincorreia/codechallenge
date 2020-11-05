@@ -9,10 +9,9 @@
     <div class="container">
         <div class="d-flex p-5 justify-content-center"><h1 class="text-center">Welcome to Code Challenge</h1></div>
         <div class="d-flex justify-content-center">
-            <a href="{% url "codeapp:code" %}" class="btn btn-primary">Lets code</a>
+            <a href="{% url "codeapp:docs-list" %}" class="btn btn-primary">Lets code</a>
         </div>
-{#        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>#}
-        <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
+        {% comment %} <i class="fa fa-cog fa-spin fa-2x fa-fw"></i>
+        <span class="sr-only">Loading...</span>{% endcomment %}
     </div>
 {% endblock content %}

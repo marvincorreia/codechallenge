@@ -1,0 +1,25 @@
+{% extends 'codeapp/base.html' %}
+{% load static %}
+{% load codeapp_extras %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex p-5 justify-content-center">
+            <h1 class="text-center">Choose a programming language</h1>
+        </div>
+        <div class="i-main">
+            <div class="d-sm-flex d-md-flex d-lg-flex flex-row justify-content-center align-items-center">
+                {% for lang in langs %}
+                    <div class="p-4 text-center">
+                        <a href="{% url 'codeapp:docs-detail' lang.value %}">
+                            <div class="i-block">
+                                <i class="{{ lang.value|get_icon_class }}" style="font-size: 45px;"></i>
+                            </div>
+                        </a>
+                        <p class="f-16">{{ lang.display }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

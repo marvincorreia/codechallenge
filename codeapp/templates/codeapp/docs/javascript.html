@@ -1,0 +1,14 @@
+{% extends 'codeapp/code.html' %}
+{% load static %}
+{% block more_js %}
+    <script src="{% static 'codeapp/js/docs.js' %}"></script>
+{% endblock %}
+
+{% block challenge_section %}
+    {{ lang|json_script:"doc-lang" }}
+    <div id="challenge_section" class="col-sm-12 col-lg-6 pr-0">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-center mt-4 text-danger"><h2>Javascript Doc</h2></div>
+        </div>
+    </div>
+{% endblock %}

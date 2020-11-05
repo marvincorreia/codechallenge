@@ -8,12 +8,12 @@
     {{ lang|json_script:"doc-lang" }}
     <div id="challenge_section" class="col-sm-12 col-lg-6 pr-0">
         <div class="container-fluid">
-            <div class="d-flex justify-content-center mt-4 text-danger"><h2>C Lang Doc</h2></div>
+            <div class="d-flex justify-content-center mt-4 text-danger"><h2>C Doc</h2></div>
             <h4 class="mt-3">Writing to standard output</h4>
             <div class="code-sample">
                 <p>Use the <strong>printf</strong> function to write on standard output</p>
                 <pre data-lang="{{ lang }}">#include &lt;stdio.h&gt;&#10;&#10;int main(){&#10;    printf("Hello World\n");&#10;}</pre>
-                <a href="#output-info" class="btn btn-success try-sample">Try sample</a>
+                <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
             </div>
 
             <h4 class="mt-4">Read from standard input</h4>
@@ -29,7 +29,7 @@ int main(){
     scanf("%s",name);
     printf("Hello %s",name);
 }</pre>
-                <a href="#output-info" class="btn btn-success try-sample">Try sample</a>
+                <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
             </div>
 
             <div class="code-sample">
@@ -42,7 +42,7 @@ int main(){
     gets(name);
     printf("Hello %s",name);
 }</pre>
-                <a href="#output-info" class="btn btn-success try-sample">Try sample</a>
+                <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
             </div>
 
             <div class="code-sample">
@@ -54,7 +54,7 @@ int main(){
     fgets(name,sizeof(name),stdin);
     printf("Hello %s",name);
 }</pre>
-                <a href="#output-info" class="btn btn-success try-sample">Try sample</a>
+                <a href="#output-info" class="btn btn-primary try-sample">Try sample</a>
             </div>
         </div>
     </div>
