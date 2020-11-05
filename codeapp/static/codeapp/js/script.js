@@ -30,7 +30,7 @@ function UI_themePickerListener() {
 }
 
 function setTheme(theme) {
-    document.getElementById('theme-style').href = themes_path + '/' + theme.toLowerCase() + '.css';
+    document.getElementById('theme-style').href = themes_path + theme.toLowerCase() + '.css';
     localStorage.setItem('theme', theme.toLowerCase())
 }
 

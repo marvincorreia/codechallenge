@@ -6,6 +6,7 @@ from . import forms
 from django.urls import reverse_lazy
 from . import models
 from django.http import Http404
+from django.conf import settings
 
 
 # Create your views here.
@@ -20,6 +21,8 @@ class BaseView(TemplateView):
     def get_context_data(self, **kwargs):
         if 'langs' not in kwargs:
             kwargs['langs'] = models.Language.get_active_langs()
+        if 'static_url' not in kwargs:
+            kwargs['static_url'] = settings.STATIC_URL
         return super(BaseView, self).get_context_data(**kwargs)
 
 
