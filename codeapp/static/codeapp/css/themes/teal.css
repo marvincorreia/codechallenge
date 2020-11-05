@@ -1,6 +1,7 @@
 :root {
     --primary-light: #20ffcd;
     --primary: #20c997;
-    --primary-alpha: rgba(32, 201, 151, 0.1);
     --primary-dark: #20885f;
+    --primary-alpha: rgba(32, 201, 151, 0.1);
+    --primary-alpha2: rgba(32, 201, 151, 0.04);
 }

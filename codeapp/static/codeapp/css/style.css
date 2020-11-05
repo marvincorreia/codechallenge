@@ -1,8 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet');
+/*@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');*/
+/*@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet');*/
 @import "themes/green.css";
 @import "imports/icons.css";
 @import "imports/font-sizes.css";
+
+@font-face {
+    font-family: "Roboto Mono Regular";
+    src: url("../vendor/fonts/google/RobotoMono-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Roboto Mono Medium";
+    src: url("../vendor/fonts/google/RobotoMono-Medium.ttf");
+}
+
+@font-face {
+    font-family: "Russo One";
+    src: url("../vendor/fonts/google/RussoOne-Regular.ttf");
+}
 
 main {
     width: 98%;
@@ -11,25 +26,20 @@ main {
 
 h1, h2, h3, h4, h5, h6, strong {
     font-family: 'Russo One', sans-serif;
-    font-weight: 500;
 }
 
-h2 {
-    color: var(--primary);
-}
-
-h3 {
+h2, h3 {
     color: var(--primary-dark);
 }
 
 p, li, label, strong, textarea, a, .btn {
-    font-family: 'Roboto Mono', monospace !important;
-    font-weight: 500 !important;
+    font-family: 'Roboto Mono Medium', monospace !important;
+    /*font-weight: 500 !important;*/
 }
 
 input, span, pre {
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 400;
+    font-family: 'Roboto Mono Regular', monospace;
+    /*font-weight: 400 !important;*/
 }
 
 strong {
@@ -74,6 +84,7 @@ pre {
     border: 1px solid grey;
     height: 30vh;
     min-height: 200px !important;
+    /*background-color: var(--primary-alpha2);*/
 }
 
 .output-textarea {
@@ -105,6 +116,7 @@ pre {
 #editor_section {
     max-height: calc(100vh - 80px);
     overflow: auto;
+    /*background-color: var(--primary-alpha2);*/
 }
 
 /* mobile and tablet view */
@@ -116,7 +128,7 @@ pre {
 
     #editor_section {
         max-height: 100% !important;
-        margin-bottom: 50px !important;
+        padding-bottom: 50px !important;
     }
 
     div.nav-container {
@@ -148,6 +160,10 @@ li.nav-item.main-nav:hover a.nav-link {
 }
 
 .dropdown-item.active {
+    background-color: var(--primary-dark);
+}
+
+.dropdown-item.active:hover {
     background-color: var(--primary);
 }
 
@@ -234,4 +250,8 @@ li.nav-item.main-nav:hover a.nav-link {
 
 .text-blue {
     color: #007bff !important;
+}
+
+#lang-icon {
+    color: var(--primary-dark);
 }
