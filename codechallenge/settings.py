@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '2g!p38xz4_@a0q9d*+yv6e$&5^5ar)7k-b!q233vl!bff&cb*m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 # SITE_URL = 'https://codechallengeapp.herokuapp.com'
@@ -127,7 +127,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    # os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static')
 ]
 
 MEDIA_URL = '/media/'
