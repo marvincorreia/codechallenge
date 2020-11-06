@@ -1,15 +1,8 @@
 /**
  * default scripts
  * */
-let UI_THEMES = ['Red', 'Green', 'Blue', 'Purple', 'Teal'];
 
-/** get saved theme */
-let ui_theme = localStorage.getItem('theme');
-if (ui_theme == null) {
-    setTheme('green')
-} else {
-    setTheme(ui_theme)
-}
+let UI_THEMES = ['Red', 'Green', 'Blue', 'Purple', 'Teal'];
 
 function UI_themePickerListener() {
     /** Populate drop-down with themes options */
@@ -27,11 +20,6 @@ function UI_themePickerListener() {
         };
         $("#ui-theme-picker").append(element);
     });
-}
-
-function setTheme(theme) {
-    document.getElementById('theme-style').href = themes_path + theme.toLowerCase() + '.css';
-    localStorage.setItem('theme', theme.toLowerCase())
 }
 
 $(document).ready(function () {

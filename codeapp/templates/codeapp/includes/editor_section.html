@@ -1,11 +1,12 @@
-<div id="editor_section" class="col-sm-12 col-lg-6 p-0">
+<div id="editor_section" class="col-sm-12 col-lg-6">
     <div class="container-fluid">
+         <!-- Loader -->
         <div class="d-flex justify-content-center align-items-center">
             <span class="loader" style="margin-top: 40vh"></span>
         </div>
         <div class="row code-area invisible">
             <!-- editor area -->
-            <div class="col-sm-12">
+            <div class="container-fluid">
                 <form id="code_form" method="post">
                     {% csrf_token %}
                     <div class="row">
@@ -25,7 +26,7 @@
             <!-- lang icon -->
             <i id="lang-icon" class="" style="font-size: 40px;"></i>
             <!-- output area -->
-            <div class="col-sm-12">
+            <div class="col-sm-12 pb-3">
                 <div class="card card-logger text-center">
                     <div class="card-header">
                         <div class="row">
