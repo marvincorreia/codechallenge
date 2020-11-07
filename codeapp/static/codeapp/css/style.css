@@ -155,7 +155,7 @@ pre {
 @media (max-width: 991px) {
     #challenge_section {
         border-bottom: 1px solid rgba(0, 0, 0, 0.25) !important;
-        border-right: none;
+        border-right: none !important;
     }
 
     #editor_section, #challenge_section {
@@ -303,4 +303,19 @@ li.nav-item.main-nav:hover a.nav-link {
 
 .navbar-brand:hover {
     color: var(--primary-light) !important;
+}
+
+footer a:hover {
+    color: var(--primary-light) !important;
+    text-decoration: none;
+    /*color: white !important;*/
+}
+
+footer a, .footer-copyright {
+    font-family: "Roboto Mono Medium", monospace;
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+footer {
+    position: relative;
 }
