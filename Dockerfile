@@ -1,13 +1,14 @@
-FROM python:3.7-slim-buster
+FROM python:3.8 as base
+RUN apt-get update
+RUN apt-get install -y pipenv
+RUN apt-get install -y openjdk-11-jdk-headless
+RUN apt-get install -y nodejs
+
+FROM base as dep
 COPY . /app
+WORKDIR /app
+RUN pipenv sync
 ENV PORT=8000
 EXPOSE 8000/tcp
-WORKDIR /app
-RUN apt-get update
-RUN apt-get install 
-RUN sudo apt-get install -y postgresql \
-libpq5 \
-libpq-dev
-# RUN pip install pipenv
-# RUN pipenv sync
-# CMD pipenv run daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2
+RUN pipenv run python manage.py collectstatic --noinput
+CMD pipenv run daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2

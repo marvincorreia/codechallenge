@@ -133,7 +133,7 @@ def run_subprocess(cmd, path, input=None) -> dict:
     if not input:
         input = "\n".join([f"'MISSING-INPUT-{x}'" for x in range(1, 21)])
     else:
-        input += '\n' if input[-1] is not '\n' else ''
+        input += '\n' if input[-1] != '\n' else ''
 
     try:
         sp = run(cmd, shell=False, capture_output=True, cwd=path,

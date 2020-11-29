@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore editor project directories
+.idea/
+.vscode/
+.git/
+
+#Environments
+#.env
+
+# static files
+staticfiles/
+
+#codes submissions
+submissions/
+m-test/
