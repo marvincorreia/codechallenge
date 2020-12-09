@@ -9,6 +9,9 @@ import platform
 
 logger = logging.getLogger(__name__)
 
+""" Max execution time """
+SUB_PROCESS_TIMEOUT = 5
+
 """ {filename} will be replaced by filename
     {path/filename} will be replaced by path/filename
     cmd = command
@@ -137,7 +140,7 @@ def run_subprocess(cmd, path, input=None) -> dict:
 
     try:
         sp = run(cmd, shell=False, capture_output=True, cwd=path,
-                 text=True, input=input, timeout=5)
+                 text=True, input=input, timeout=SUB_PROCESS_TIMEOUT)
         if sp.stderr:
             logger.error(sp.stderr)
     except Exception as e:

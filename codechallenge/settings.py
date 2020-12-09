@@ -26,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '2g!p38xz4_@a0q9d*+yv6e$&5^5ar)7k-b!q233vl!bff&cb*m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 # SITE_URL = 'https://codechallengeapp.herokuapp.com'

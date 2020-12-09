@@ -8,7 +8,7 @@ utilizando websocket e subprocessos em python
 # Pré requisitos
 
 - [Git](https://git-scm.com/)
-- [Python 3.7](https://www.python.org/downloads/release/python-370/)
+- [Python 3.8](https://www.python.org/downloads/release/python-380/)
 
 # Instalação
 
@@ -22,7 +22,7 @@ cd codechallenge
 ```
 
 ### Pipenv ###
-O projeto tem como dependência principal o python 3.7
+O projeto tem como dependência principal o python 
  e utiliza para esse efeito o gerenciador de dependências chamado [pipenv](https://pypi.org/project/pipenv/),
 criado por Kenneth Reitz e que se tornou no recurso oficial recomendado para 
 gerenciar dependências no Python.
@@ -49,7 +49,7 @@ apartir do diretorio raiz do projeto:
 ***Criar ambiente virtual python para o projeto:***
  
 ```
-pipenv --python 3.7
+pipenv --python 3.8
 ```
 ou
 ```
