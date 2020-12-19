@@ -12,5 +12,5 @@ WORKDIR /app
 RUN pipenv install --system
 ENV PORT=8000
 EXPOSE 8000/tcp
-RUN pipenv run python manage.py collectstatic --noinput
-CMD pipenv run daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2
+RUN python manage.py collectstatic --noinput
+CMD daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2
