@@ -9,8 +9,9 @@ import platform
 
 logger = logging.getLogger(__name__)
 
-""" Max execution time """
-SUB_PROCESS_TIMEOUT = 5
+""" Subprocess execution time """
+RUN_TIMEOUT = 5
+COMPILER_TIMEOUT = 10
 
 """ {filename} will be replaced by filename
     {path/filename} will be replaced by path/filename
@@ -141,7 +142,7 @@ def run_subprocess(cmd, path, input=None) -> dict:
 """
 
 
-def run_subprocess(cmd, path, input=None) -> dict:
+def run_subprocess(cmd, path, timeout=RUN_TIMEOUT, input=None) -> dict:
     logger.error(f"Subprocess running...\ncmd = {cmd}\tcwd = {path}")
     cmd = shlex.split(cmd)
     if not input:
@@ -151,7 +152,7 @@ def run_subprocess(cmd, path, input=None) -> dict:
 
     try:
         sp = run(cmd, shell=False, capture_output=True, cwd=path,
-                 text=True, input=input, timeout=SUB_PROCESS_TIMEOUT)
+                 text=True, input=input, timeout=timeout)
         if sp.stderr:
             logger.error(sp.stderr)
     except Exception as e:
@@ -163,11 +164,11 @@ def run_subprocess(cmd, path, input=None) -> dict:
 
 
 def compile_and_run(compile_cmd, run_cmd, path, input=None) -> dict:
-    compiler_output = run_subprocess(compile_cmd, path)
+    compiler_output = run_subprocess(compile_cmd, path, timeout=COMPILER_TIMEOUT)
     if compiler_output['stderr']:
         return compiler_output
     else:
-        return run_subprocess(run_cmd, path, input)
+        return run_subprocess(run_cmd, path, input=input)
 
 
 def runcode(code: str, lang: str, input=None) -> dict:
@@ -179,10 +180,11 @@ def runcode(code: str, lang: str, input=None) -> dict:
         output = compile_and_run(
             compile_cmd=format_cmd(get_compile_cmd(lang), path, filename),
             run_cmd=format_cmd(get_run_cmd(lang), path, filename),
-            path=path, input=input
+            path=path,
+            input=input
         )
     else:
         run_cmd = format_cmd(get_run_cmd(lang), path, filename)
-        output = run_subprocess(run_cmd, path, input)
-    # delete_runtime_files(path, filename)
+        output = run_subprocess(run_cmd, path, input=input)
+    delete_runtime_files(path, filename)
     return output

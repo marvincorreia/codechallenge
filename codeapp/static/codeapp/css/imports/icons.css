@@ -1,6 +1,7 @@
 /**  =====================
       Icon layouts css start
 ==========================  **/
+
 .i-main .i-block {
     display: inline-flex;
     align-items: center;
@@ -16,10 +17,13 @@
 
 .i-main .i-block:hover {
     background-color: white;
+    background-color: var(--primary-alpha);
+    border: 3px solid var(--primary-dark);
 }
 
 .i-main .i-block:hover i {
-    color: black;
+    color: var(--primary-dark);
+    /* color: black; */
 }
 
 .i-main .i-block i {
@@ -42,5 +46,6 @@
     width: 40px;
     height: 40px;
 }
+
 
 /**====== Icon layouts css end ======**/
