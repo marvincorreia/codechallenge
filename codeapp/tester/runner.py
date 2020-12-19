@@ -22,21 +22,31 @@ VALID_LANGS = {
         'run_cmd': 'python {filename}.py',
         'ext': '.py'
     },
-    # 'typescript': {'run_cmd': 'ts-node', 'ext': '.ts'},
     'javascript': {
         'run_cmd': 'node {filename}.js',
         'ext': '.js'
+    },
+    'typescript': {
+        'run_cmd': 'node {filename}.js',
+        'compile_cmd': 'tsc {filename}.ts',
+        'ext': '.ts'
     },
     'c': {
         'run_cmd': '{path/filename}.exe' if platform.system() == "Windows" else './{filename}',
         'ext': '.c',
         'compile_cmd': 'gcc {filename}.c -o {filename}'
     },
+    'cpp': {
+        'run_cmd': '{path/filename}.exe' if platform.system() == "Windows" else './{filename}',
+        'ext': '.cpp',
+        'compile_cmd': 'g++ {filename}.cpp -o {filename}'
+    },
     'java': {
         'run_cmd': 'java {filename}',
         'ext': '.java',
         'compile_cmd': 'javac {filename}.java'
     }
+
 }
 
 
@@ -49,7 +59,7 @@ def create_source_file(path, filename, ext, code):
 
 
 def class_refactor(code, filename):
-    """ Ensure that the class name is equal a file name generated on java """
+    """ Ensure that the main java class name is equal a file name generated"""
     try:
         old_class = code[0:code.index('{')].split()[-1]
         return code.replace(old_class, filename, 1)
@@ -99,7 +109,8 @@ def make_paths() -> tuple:
     if not isdir(path):
         makedirs(path)
     logger.error(f"Path created at: {abspath(path)}")
-    filename = "File" + f"{now.year}{now.month}{now.day}{now.hour}{now.minute}{now.second}"
+    filename = "File" + \
+        f"{now.year}{now.month}{now.day}{now.hour}{now.minute}{now.second}"
     return path, filename
 
 
@@ -146,7 +157,8 @@ def run_subprocess(cmd, path, input=None) -> dict:
     except Exception as e:
         logger.error(str(e))
         return dict(stdout="", stderr=f"ERROR: {e}")
-    logger.error(dict(stdout=sp.stdout, stderr=sp.stderr, returncode=sp.returncode))
+    logger.error(dict(stdout=sp.stdout, stderr=sp.stderr,
+                      returncode=sp.returncode))
     return dict(stdout=sp.stdout, stderr=sp.stderr)
 
 
@@ -172,5 +184,5 @@ def runcode(code: str, lang: str, input=None) -> dict:
     else:
         run_cmd = format_cmd(get_run_cmd(lang), path, filename)
         output = run_subprocess(run_cmd, path, input)
-    delete_runtime_files(path, filename)
+    # delete_runtime_files(path, filename)
     return output

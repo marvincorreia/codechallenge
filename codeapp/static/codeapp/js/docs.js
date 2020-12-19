@@ -21,6 +21,7 @@ $(document).ready(function () {
     });
     setTimeout(function () {
         $('#submit-btn').attr('disabled', '');
+        // $('#submit-btn').addClass('invisible');
         resetActionButtonsState = function () {
             setTimeout(function () {
                 $('#run-btn').removeClass().addClass('btn btn-outline-primary mr-4').attr('title', 'Run')

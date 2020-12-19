@@ -3,6 +3,8 @@ RUN apt-get update
 RUN apt-get install -y pipenv
 RUN apt-get install -y openjdk-11-jdk-headless
 RUN apt-get install -y nodejs
+RUN apt-get install -y npm
+RUN npm install -g typescript
 
 FROM base as dep
 COPY . /app
