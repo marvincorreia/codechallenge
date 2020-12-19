@@ -9,7 +9,7 @@ RUN npm install -g typescript
 FROM base as dep
 COPY . /app
 WORKDIR /app
-RUN pipenv sync
+RUN pipenv install --system
 ENV PORT=8000
 EXPOSE 8000/tcp
 RUN pipenv run python manage.py collectstatic --noinput
