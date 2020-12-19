@@ -8,7 +8,7 @@ register = template.Library()
 @stringfilter
 def get_icon_class(lang):
     icon_class = "devicons devicons-"
-    if lang == 'javascript' or lang == 'typescript':
+    if lang == 'javascript' or lang == 'typescript':    
         return icon_class + 'nodejs_small'
     if lang == 'c' or lang == 'cpp':
         return "fas fa-code"
