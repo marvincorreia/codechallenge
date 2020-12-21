@@ -1,16 +1,15 @@
-FROM python:3.8 as base
-RUN apt-get update
-RUN apt-get install -y pipenv
-RUN apt-get install -y openjdk-11-jdk-headless
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm
-RUN npm install -g typescript
-
-FROM base as app
-COPY . /app
-WORKDIR /app
+FROM python:3.8 AS builder
+RUN apt-get update && apt-get install -y pipenv \
+openjdk-11-jdk-headless \
+nodejs \
+npm \
+npm install -g typescript
 ENV PORT=8000
 EXPOSE 8000/tcp
+
+FROM builder AS app
+COPY . /app
+WORKDIR /app
 RUN pipenv install --system --deploy
 RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate --noinput
