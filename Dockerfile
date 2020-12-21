@@ -6,7 +6,7 @@ RUN apt-get install -y nodejs
 RUN apt-get install -y npm
 RUN npm install -g typescript
 
-FROM base as dep
+FROM base as app
 COPY . /app
 WORKDIR /app
 ENV PORT=8000
