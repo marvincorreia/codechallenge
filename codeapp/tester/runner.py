@@ -1,11 +1,12 @@
 from django.utils import timezone
 from os.path import join, isdir, dirname, isfile, abspath
-from os import makedirs, remove, listdir, removedirs
+from os import makedirs, remove, listdir, removedirs, setgid, setuid
 from random import randint
 from subprocess import PIPE, run, TimeoutExpired
 import logging
 import shlex
 import platform
+import pwd
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,7 @@ COMPILER_TIMEOUT = 10
 """ {filename} will be replaced by filename
     {path/filename} will be replaced by path/filename
     cmd = command
-    ext = file extension 
+    ext = file extension
 """
 VALID_LANGS = {
     'python': {
@@ -142,7 +143,14 @@ def run_subprocess(cmd, path, input=None) -> dict:
 """
 
 
-def run_subprocess(cmd, path, timeout=RUN_TIMEOUT, input=None) -> dict:
+def demote(sandbox):
+    user = pwd.getpwnam("newuser") if sandbox else pwd.getpwnam("root")
+    setgid(user.pw_gid)
+    setuid(user.pw_uid)
+
+
+def run_subprocess(cmd, path, timeout=RUN_TIMEOUT, input=None, sandbox=None) -> dict:
+
     logger.error(f"Subprocess running...\ncmd = {cmd}\tcwd = {path}")
     cmd = shlex.split(cmd)
     if not input:
@@ -152,7 +160,7 @@ def run_subprocess(cmd, path, timeout=RUN_TIMEOUT, input=None) -> dict:
 
     try:
         sp = run(cmd, shell=False, capture_output=True, cwd=path,
-                 text=True, input=input, timeout=timeout)
+                 text=True, input=input, timeout=timeout, preexec_fn=demote(sandbox))
         if sp.stderr:
             logger.error(sp.stderr)
     except Exception as e:
@@ -160,6 +168,7 @@ def run_subprocess(cmd, path, timeout=RUN_TIMEOUT, input=None) -> dict:
         return dict(stdout="", stderr=f"ERROR: {e}")
     logger.error(dict(stdout=sp.stdout, stderr=sp.stderr,
                       returncode=sp.returncode))
+    demote(sandbox=False)
     return dict(stdout=sp.stdout, stderr=sp.stderr)
 
 
@@ -168,7 +177,7 @@ def compile_and_run(compile_cmd, run_cmd, path, input=None) -> dict:
     if compiler_output['stderr']:
         return compiler_output
     else:
-        return run_subprocess(run_cmd, path, input=input)
+        return run_subprocess(run_cmd, path, input=input, sandbox=True)
 
 
 def runcode(code: str, lang: str, input=None) -> dict:
@@ -185,6 +194,6 @@ def runcode(code: str, lang: str, input=None) -> dict:
         )
     else:
         run_cmd = format_cmd(get_run_cmd(lang), path, filename)
-        output = run_subprocess(run_cmd, path, input=input)
-    delete_runtime_files(path, filename)
+        output = run_subprocess(run_cmd, path, input=input, sandbox=True)
+    # delete_runtime_files(path, filename)
     return output
