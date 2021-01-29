@@ -1,13 +1,14 @@
 from django.utils import timezone
 from os.path import join, isdir, dirname, isfile, abspath
-from os import makedirs, remove, listdir, removedirs, setgid, setuid
+from os import makedirs, remove, listdir, removedirs, setgid, setuid, environ, system, getenv
 from random import randint
-from subprocess import PIPE, run, TimeoutExpired
+from subprocess import PIPE, run, TimeoutExpired, Popen
 import logging
 import shlex
 import platform
 import pwd
 
+logging.basicConfig(level=logging.NOTSET)
 logger = logging.getLogger(__name__)
 
 """ Subprocess execution time """
@@ -57,7 +58,7 @@ def create_source_file(path, filename, ext, code):
         code = class_refactor(code, filename)
     with open(join(path, filename + ext), mode='w', encoding='UTF-8')as fp:
         fp.writelines(code.split('\r'))
-        logger.error(f"{filename}{ext} created at {abspath(path)}")
+        logger.debug(f"{filename}{ext} created at {abspath(path)}")
 
 
 def class_refactor(code, filename):
@@ -110,7 +111,7 @@ def make_paths() -> tuple:
     path = join('submissions', str(now.year), str(now.month), str(now.day))
     if not isdir(path):
         makedirs(path)
-    logger.error(f"Path created at: {abspath(path)}")
+    logger.debug(f"Path created at: {abspath(path)}")
     filename = "File" + \
         f"{now.year}{now.month}{now.day}{now.hour}{now.minute}{now.second}"
     return path, filename
@@ -144,14 +145,30 @@ def run_subprocess(cmd, path, input=None) -> dict:
 
 
 def demote(sandbox):
-    user = pwd.getpwnam("newuser") if sandbox else pwd.getpwnam("root")
-    setgid(user.pw_gid)
-    setuid(user.pw_uid)
+    def result():
+        try:
+            user = pwd.getpwnam(getenv("NO_ROOT_USER"))
+            setgid(user.pw_gid)
+            setuid(user.pw_uid)
+        except Exception as e:
+            logger.error("Can't demote user, aborting...")
+            raise e
+    return result if sandbox else None
+
+
+def code_firewall_ok(code):
+    code = ' '.join([x for x in code.splitlines() if x])
+    code = ' '.join([x for x in code.split(' ') if x])
+    logger.debug(code)
+    patterns = ['rm -', 'rm /', 'rm .', 'rm *']
+    for pattern in patterns:
+        if pattern in code:
+            return False
+    return True
 
 
 def run_subprocess(cmd, path, timeout=RUN_TIMEOUT, input=None, sandbox=None) -> dict:
-
-    logger.error(f"Subprocess running...\ncmd = {cmd}\tcwd = {path}")
+    logger.info(f"Subprocess running...\ncmd = {cmd}\tcwd = {path}")
     cmd = shlex.split(cmd)
     if not input:
         input = "\n".join([f"'MISSING-INPUT-{x}'" for x in range(1, 21)])
@@ -162,13 +179,12 @@ def run_subprocess(cmd, path, timeout=RUN_TIMEOUT, input=None, sandbox=None) -> 
         sp = run(cmd, shell=False, capture_output=True, cwd=path,
                  text=True, input=input, timeout=timeout, preexec_fn=demote(sandbox))
         if sp.stderr:
-            logger.error(sp.stderr)
+            logger.debug(sp.stderr)
     except Exception as e:
         logger.error(str(e))
         return dict(stdout="", stderr=f"ERROR: {e}")
-    logger.error(dict(stdout=sp.stdout, stderr=sp.stderr,
+    logger.debug(dict(stdout=sp.stdout, stderr=sp.stderr,
                       returncode=sp.returncode))
-    demote(sandbox=False)
     return dict(stdout=sp.stdout, stderr=sp.stderr)
 
 
@@ -183,6 +199,8 @@ def compile_and_run(compile_cmd, run_cmd, path, input=None) -> dict:
 def runcode(code: str, lang: str, input=None) -> dict:
     if not valid_lang(lang):
         return dict(stdout="", stderr="ERROR: This programing language is not supported")
+    if not code_firewall_ok(code):
+        return dict(stdout="", stderr="ERROR: Dangerous commands are not allowed")
     path, filename = make_paths()
     create_source_file(path, filename, get_ext(lang), code)
     if need_compile(lang):
