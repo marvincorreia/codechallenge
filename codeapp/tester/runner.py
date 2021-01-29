@@ -213,5 +213,5 @@ def runcode(code: str, lang: str, input=None) -> dict:
     else:
         run_cmd = format_cmd(get_run_cmd(lang), path, filename)
         output = run_subprocess(run_cmd, path, input=input, sandbox=True)
-    # delete_runtime_files(path, filename)
+    delete_runtime_files(path, filename)
     return output
