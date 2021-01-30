@@ -71,12 +71,12 @@ def class_refactor(code, filename):
 
 
 def delete_runtime_files(path, filename):
-    file_names = [f for f in listdir(path) if filename == f.split('.')[0]]
-    for f in file_names:
-        try:
+    try:
+        file_names = [f for f in listdir(path) if filename == f.split('.')[0]]
+        for f in file_names:
             remove(join(path, f))
-        except Exception as e:
-            logger.error(str(e))
+    except Exception as e:
+        logger.error(str(e))
 
 
 def valid_lang(lang) -> bool:
@@ -147,20 +147,23 @@ def run_subprocess(cmd, path, input=None) -> dict:
 def demote(sandbox):
     def result():
         try:
-            user = pwd.getpwnam(getenv("NO_ROOT_USER"))
+            user = pwd.getpwnam(getenv("GUEST_USER"))
             setgid(user.pw_gid)
             setuid(user.pw_uid)
         except Exception as e:
-            logger.error("Can't demote user, aborting...")
-            raise e
+            pass
+            # logger.error("Can't demote user!")
     return result if sandbox else None
 
 
 def code_firewall_ok(code):
+    replaces = ['"', "'", '+', '\\']
+    for x in replaces:
+        code = code.replace(x, '')
     code = ' '.join([x for x in code.splitlines() if x])
     code = ' '.join([x for x in code.split(' ') if x])
     logger.debug(code)
-    patterns = ['rm -', 'rm /', 'rm .', 'rm *']
+    patterns = ['rm -', 'rm /', 'rm .', 'rm *','--no-preserve-root']
     for pattern in patterns:
         if pattern in code:
             return False
