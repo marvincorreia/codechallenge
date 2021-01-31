@@ -9,7 +9,7 @@ __pycache__/
 .git/
 
 #Environments
-#.env
+.env
 
 # static files
 staticfiles/

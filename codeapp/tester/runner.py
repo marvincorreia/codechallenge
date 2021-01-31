@@ -202,8 +202,8 @@ def compile_and_run(compile_cmd, run_cmd, path, input=None) -> dict:
 def runcode(code: str, lang: str, input=None) -> dict:
     if not valid_lang(lang):
         return dict(stdout="", stderr="ERROR: This programing language is not supported")
-    if not code_firewall_ok(code):
-        return dict(stdout="", stderr="ERROR: Dangerous commands are not allowed")
+    # if not code_firewall_ok(code):
+    #     return dict(stdout="", stderr="ERROR: Dangerous commands are not allowed")
     path, filename = make_paths()
     create_source_file(path, filename, get_ext(lang), code)
     if need_compile(lang):
