@@ -17,5 +17,5 @@ COPY . .
 RUN python manage.py collectstatic --noinput && python manage.py migrate --noinput
 RUN chown root: . && chmod -R 755 .
 RUN mkdir submissions && chmod -R 777 submissions
-USER ${GUEST_USER}
+# USER ${GUEST_USER}
 CMD daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2
