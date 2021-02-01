@@ -15,7 +15,14 @@ RUN groupadd --gid 5000 ${GUEST_USER} \
 WORKDIR /app
 COPY . .
 RUN python manage.py collectstatic --noinput && python manage.py migrate --noinput
-RUN chown root: . && chmod -R 755 .
-RUN mkdir submissions && chmod -R 777 submissions
-# USER ${GUEST_USER}
-CMD daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2
+# RUN chown root: . && chmod -R 755 .
+# RUN chmod -R 755 .
+# RUN mkdir submissions && chmod -R 777 submissions
+RUN mkdir submissions
+RUN chmod +x docker-entrypoint.sh
+USER ${GUEST_USER}
+ENTRYPOINT ["./docker-entrypoint.sh"]
+# CMD daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2
+# CMD ["/bin/bash","-c","daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2"]
+# CMD ["daphne","codechallenge.asgi:application","--port","${PORT}","--bind","0.0.0.0","-v2"]
+# CMD ["bash"]
