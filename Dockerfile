@@ -12,17 +12,11 @@ EXPOSE ${PORT}
 RUN groupadd --gid 5000 ${GUEST_USER} \
 && useradd --home-dir /home/${GUEST_USER} --create-home --uid 5000 \
 --gid 5000 --shell /bin/bash --skel /dev/null ${GUEST_USER}
+# COPY docker-entrypoint.sh /
 WORKDIR /app
 COPY . .
 RUN python manage.py collectstatic --noinput && python manage.py migrate --noinput
-# RUN chown root: . && chmod -R 755 .
-# RUN chmod -R 755 .
-# RUN mkdir submissions && chmod -R 777 submissions
-RUN mkdir submissions
-RUN chmod +x docker-entrypoint.sh
+RUN chmod -R 555 /app
+RUN mkdir submissions && chmod -R 777 submissions
 USER ${GUEST_USER}
-ENTRYPOINT ["./docker-entrypoint.sh"]
-# CMD daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2
-# CMD ["/bin/bash","-c","daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2"]
-# CMD ["daphne","codechallenge.asgi:application","--port","${PORT}","--bind","0.0.0.0","-v2"]
-# CMD ["bash"]
+CMD daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2
