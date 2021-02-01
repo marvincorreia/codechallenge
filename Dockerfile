@@ -16,7 +16,7 @@ RUN groupadd --gid 5000 ${GUEST_USER} \
 WORKDIR /app
 COPY . .
 RUN python manage.py collectstatic --noinput && python manage.py migrate --noinput
-RUN chmod -R 555 /app
+RUN chmod -R 111 /app
 RUN mkdir submissions && chmod -R 777 submissions
 USER ${GUEST_USER}
 CMD daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2
