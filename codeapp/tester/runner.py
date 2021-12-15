@@ -153,7 +153,7 @@ def demote(sandbox):
         except Exception as e:
             pass
             # logger.error("Can't demote user!")
-    return None if sandbox else None
+    return result if sandbox else None
 
 
 def code_firewall_ok(code):
