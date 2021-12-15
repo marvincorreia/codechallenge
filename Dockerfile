@@ -19,6 +19,7 @@ COPY . .
 # RUN chown root: /app && chmod -R 555 /app
 # RUN chmod -R 444 /app
 # RUN mkdir submissions && chmod -R 777 submissions
-USER ${GUEST_USER}
+# RUN chown guest: /app/submissions
+# USER ${GUEST_USER}
 CMD daphne codechallenge.asgi:application --port $PORT --bind 0.0.0.0 -v2
 # CMD python manage.py runserver $PORT
