@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 from djangoeditorwidgets.config import *
 from django.utils.log import DEFAULT_LOGGING
-import django_heroku
+# import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -141,4 +141,4 @@ ASGI_APPLICATION = "codechallenge.routing.application"
 DEFAULT_LOGGING['handlers']['console']['filters'] = []
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
